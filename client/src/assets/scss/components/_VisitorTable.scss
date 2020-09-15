@@ -1,0 +1,44 @@
+.visitor-table {
+  border-collapse: collapse;
+  border: 1px solid #aaa;
+  margin: auto;
+  th,
+  td {
+    border: 1px solid #aaa;
+    & {
+      padding: 0 15px;
+    }
+  }
+
+  .status {
+    padding: 10px;
+  }
+}
+
+.logged-in {
+  position: relative;
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    -moz-border-radius: 7.5px;
+    -webkit-border-radius: 7.5px;
+    border-radius: 7.5px;
+    background: green;
+  }
+}
+
+.logged-out {
+  position: relative;
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    -moz-border-radius: 7.5px;
+    -webkit-border-radius: 7.5px;
+    border-radius: 7.5px;
+    background: red;
+  }
+}
