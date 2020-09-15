@@ -28,7 +28,7 @@ app.post('/visitor', async (req, res) => {
     } = req.body
 
     const newVisitor = await pool.query(
-      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment, is_logged ) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment, is_logged ) VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *',
       [
         first_name,
         last_name,
@@ -70,6 +70,39 @@ app.get('/visitor/:id', async (req, res) => {
     ])
 
     res.json(visitor.rows)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+//POST VISIT
+
+app.post('/visitor/visits/:v_id', async (req, res) => {
+  try {
+    const { v_id } = req.params
+    const updatedUser = await pool.query(
+      'UPDATE visitors SET end_time = $1, is_logged = $2 WHERE id = $3',
+      ['now()', false, v_id]
+    )
+
+    // query starting time from currentAppointment
+    const startTime = await pool.query(
+      'SELECT start_time FROM visitors WHERE id = $1',
+      [v_id]
+    )
+    const time = startTime.rows[0]['start_time']
+
+    await pool.query(
+      'INSERT INTO visits (v_id, start_time, end_time) VALUES( $1, $2, $3 ) RETURNING *',
+      [v_id, time, 'now()']
+    )
+
+    await pool.query(
+      'UPDATE visitors SET current_appointment = null WHERE id = $1',
+      [v_id]
+    )
+
+    res.json(updatedUser)
   } catch (error) {
     console.log(error)
   }
