@@ -59,3 +59,18 @@ app.get('/visitors', async (req, res) => {
 app.listen(5000, () => {
   console.log(`App started on port 5000`)
 })
+
+//GET a single visitor
+
+app.get('/visitor/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const visitor = await pool.query('SELECT * FROM VISITORS WHERE id = $1', [
+      id,
+    ])
+
+    res.json(visitor.rows)
+  } catch (error) {
+    console.log(error)
+  }
+})
