@@ -25,7 +25,7 @@ export default {
 
   getAllVisitors: async ({ commit }) => {
     axios
-      .get(`${baseUrl}visitors`)
+      .get(`${base_URL}visitors`)
       .then((res) => {
         commit('GET_VISITORS', res.data)
       })

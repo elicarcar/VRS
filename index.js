@@ -24,19 +24,11 @@ app.post('/visitor', async (req, res) => {
       email,
       company_name,
       current_appointment,
-      is_logged,
     } = req.body
 
     const newVisitor = await pool.query(
-      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment, is_logged ) VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *',
-      [
-        first_name,
-        last_name,
-        email,
-        company_name,
-        current_appointment,
-        is_logged,
-      ]
+      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
+      [first_name, last_name, email, company_name, current_appointment]
     )
     res.json(newVisitor.rows[0])
   } catch (error) {
