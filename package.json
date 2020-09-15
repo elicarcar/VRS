@@ -4,7 +4,11 @@
   "description": "Visitor Registration System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "server": "nodemon index.js",
+    "client": "cd client && npm run serve",
+    "dev": "concurrently \"nodemon index.js\" \"cd client && npm run serve\""
   },
   "author": "Elisabetta Carcar",
   "license": "ISC",

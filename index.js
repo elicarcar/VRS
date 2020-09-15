@@ -1,9 +1,9 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const pool = require('./db')
+const pool = require('./db/db')
 
-// app.use(cors)
+app.use(cors())
 app.use(express.json())
 
 app.get('/', async (req, res) => {
