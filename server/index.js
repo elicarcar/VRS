@@ -107,3 +107,14 @@ app.post('/visitor/visits/:v_id', async (req, res) => {
     console.log(error)
   }
 })
+
+// GET all visits
+
+app.get('/visits', async (req, res) => {
+  try {
+    const visits = await pool.query('SELECT * FROM visits')
+    res.json(visits.rows)
+  } catch (error) {
+    console.log(error)
+  }
+})
