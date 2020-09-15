@@ -3,20 +3,59 @@ const app = express()
 const cors = require('cors')
 const pool = require('./db')
 
-const PORT = process.env.PORT || 3000
-
-app.use(cors)
+// app.use(cors)
 app.use(express.json())
 
-// add visitor
-app.post('/visitor', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
-    console.log(req.body)
+    console.log('hello')
+    res.end('okay')
   } catch (error) {
-    console.error(error)
+    console.log(error)
   }
 })
 
-app.listen(PORT, () => {
-  console.log(`App started on port ${PORT}`)
+// POST visitor
+app.post('/visitor', async (req, res) => {
+  try {
+    const {
+      first_name,
+      last_name,
+      email,
+      company_name,
+      current_appointment,
+      is_logged,
+    } = req.body
+
+    const newVisitor = await pool.query(
+      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment, is_logged ) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+      [
+        first_name,
+        last_name,
+        email,
+        company_name,
+        current_appointment,
+        is_logged,
+      ]
+    )
+    res.json(newVisitor.rows[0])
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+// GET all visitors
+
+app.get('/visitors', async (req, res) => {
+  try {
+    const allVisitors = await pool.query('SELECT * FROM visitors')
+
+    res.json(allVisitors.rows)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.listen(5000, () => {
+  console.log(`App started on port 5000`)
 })

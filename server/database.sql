@@ -7,7 +7,7 @@ CREATE TABLE visitors (
     company_name VARCHAR(50) NOT NULL, 
     email VARCHAR(100) NOT NULL UNIQUE, 
     current_appointment JSON DEFAULT NULL,
-    is_logged Boolean set default true);
+    is_logged Boolean default true);
 
 CREATE TABLE visits (
 id INT NOT NULL PRIMARY KEY,
