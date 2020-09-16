@@ -15,7 +15,7 @@ export default {
 
   addVisitor: async ({ commit }, visitor) => {
     axios
-      .post('http://localhost:5000/visitor', visitor)
+      .post(`${base_URL}visitor`, visitor)
       .then((res) => {
         commit('ADD_VISITORS', res.data)
         console.log(res)
@@ -30,5 +30,15 @@ export default {
         commit('GET_VISITORS', res.data)
       })
       .catch((error) => console.log(error))
+  },
+
+  updateVisitor: async ({ commit }, id) => {
+    axios
+      .post(`${base_URL}visitor/visits/${id}`)
+      .then((res) => {
+        commit('UPDATE_CURRENT_VISITORS', res.data)
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
   },
 }

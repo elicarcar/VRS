@@ -10,4 +10,8 @@ export default {
   GET_VISITORS: (state, visitors) => {
     state.visitors = visitors
   },
+
+  UPDATE_CURRENT_VISITORS: (state) => {
+    return state
+  },
 }

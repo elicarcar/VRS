@@ -2,14 +2,26 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const pool = require('./db/db')
+const csurf = require('csurf')
+const cookieParser = require('cookie-parser')
 
 app.use(cors())
 app.use(express.json())
 
+const csrfMiddleware = csurf({
+  cookie: true,
+})
+
+app.use(cookieParser())
+app.use(csrfMiddleware)
+
 app.get('/', async (req, res) => {
   try {
-    console.log('hello')
-    res.end('okay')
+    res.redirect(
+      `https://id.heroku.com/oauth/authorize?client_id=${
+        process.env.HEROKU_OAUTH_ID
+      }&response_type=code&scope=global&state=${req.csrfToken()}`
+    )
   } catch (error) {
     console.log(error)
   }
@@ -78,15 +90,16 @@ app.post('/visitor/visits/:v_id', async (req, res) => {
     )
 
     // query starting time from currentAppointment
-    const startTime = await pool.query(
-      'SELECT start_time FROM visitors WHERE id = $1',
+    const query = await pool.query(
+      'SELECT start_time, current_appointment  FROM visitors WHERE id = $1',
       [v_id]
     )
-    const time = startTime.rows[0]['start_time']
+    const time = query.rows[0]['start_time']
+    const appointment = query.rows[0]['current_appointment']
 
     await pool.query(
-      'INSERT INTO visits (v_id, start_time, end_time) VALUES( $1, $2, $3 ) RETURNING *',
-      [v_id, time, 'now()']
+      'INSERT INTO visits (v_id, person, start_time, end_time) VALUES( $1, $2, $3, $4 ) RETURNING *',
+      [v_id, appointment, time, 'now()']
     )
 
     await pool.query(

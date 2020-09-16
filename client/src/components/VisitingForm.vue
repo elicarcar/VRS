@@ -66,8 +66,6 @@
 
       <b-button type="submit" variant="primary">Submit</b-button>
     </b-form>
-
-    <!-- <p>{{ alerts }}</p> -->
   </div>
 </template>
 
