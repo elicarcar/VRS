@@ -6,12 +6,20 @@
     </div>
 
     <AllVisitors v-if="!showOnline" :visitors="visitors" />
+
+    <CurrentVisitors
+      v-if="showOnline"
+      :visitors="activeVisitors"
+      :changeStatus="changeStatus"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import AllVisitors from '../components/AllVisitors'
+import CurrentVisitors from '../components/CurrentVisitors'
+
 export default {
   name: 'Visitors',
 
@@ -23,14 +31,23 @@ export default {
 
   components: {
     AllVisitors,
+    CurrentVisitors,
   },
 
   computed: {
     ...mapState(['visitors']),
+    ...mapGetters(['activeVisitors']),
   },
 
   methods: {
-    ...mapActions(['getAllVisitors']),
+    ...mapActions(['getAllVisitors', 'updateVisitor']),
+    changeStatus: async function(visitor) {
+      try {
+        this.updateVisitor(visitor)
+      } catch (error) {
+        console.log(error)
+      }
+    },
   },
 
   mounted() {
