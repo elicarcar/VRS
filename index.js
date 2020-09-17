@@ -8,25 +8,30 @@ const cookieParser = require('cookie-parser')
 app.use(cors())
 app.use(express.json())
 
-const csrfMiddleware = csurf({
-  cookie: true,
-})
+// const csrfMiddleware = csurf({
+//   cookie: true,
+// })
 
 app.use(cookieParser())
-app.use(csrfMiddleware)
+// app.use(csrfMiddleware)
 
-app.get('/', async (req, res) => {
+app.get('/auth', async (req, res) => {
   try {
     res.redirect(
       `https://id.heroku.com/oauth/authorize?client_id=${
-        process.env.HEROKU_OAUTH_ID
-      }&response_type=code&scope=global&state=${req.csrfToken()}`
+        process.env.CLIENT_ID
+      }&response_type=code&scope=identity&state=${req.csrfToken()}`
     )
   } catch (error) {
     console.log(error)
   }
 })
 
+app.get('/callback', function (req, res) {
+  var code = req.query.code || null
+  var state = req.query.state || null
+  console.log(code + state)
+})
 // POST visitor
 app.post('/visitor', async (req, res) => {
   try {
@@ -84,22 +89,22 @@ app.get('/visitor/:id', async (req, res) => {
 app.post('/visitor/visits/:v_id', async (req, res) => {
   try {
     const { v_id } = req.params
-    const updatedUser = await pool.query(
+    await pool.query(
       'UPDATE visitors SET end_time = $1, is_logged = $2 WHERE id = $3',
       ['now()', false, v_id]
     )
 
-    // query starting time from currentAppointment
+    // query starting time and current_appointment
     const query = await pool.query(
       'SELECT start_time, current_appointment  FROM visitors WHERE id = $1',
       [v_id]
     )
-    const time = query.rows[0]['start_time']
+    const start_time = query.rows[0]['start_time']
     const appointment = query.rows[0]['current_appointment']
 
     await pool.query(
       'INSERT INTO visits (v_id, person, start_time, end_time) VALUES( $1, $2, $3, $4 ) RETURNING *',
-      [v_id, appointment, time, 'now()']
+      [v_id, appointment, start_time, 'now()']
     )
 
     await pool.query(
@@ -107,7 +112,10 @@ app.post('/visitor/visits/:v_id', async (req, res) => {
       [v_id]
     )
 
-    res.json(updatedUser)
+    const currentVisitors = await pool.query(
+      'SELECT * FROM visitors WHERE is_logged = true'
+    )
+    res.json(currentVisitors.rows)
   } catch (error) {
     console.log(error)
   }

@@ -41,8 +41,10 @@ export default {
 
   methods: {
     ...mapActions(['getAllVisitors', 'updateVisitor']),
+
     changeStatus: async function(visitor) {
       try {
+        console.log(visitor)
         this.updateVisitor(visitor)
       } catch (error) {
         console.log(error)
