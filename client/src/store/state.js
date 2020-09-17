@@ -7,5 +7,5 @@ export default {
   people: [],
   visitors: [],
   visits: [],
-  alert: [],
+  alerts: [],
 }
