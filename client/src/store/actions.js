@@ -1,4 +1,5 @@
 import axios from 'axios'
+import uuid from 'uuid'
 import { base_URL } from '../utils'
 
 export default {
@@ -49,5 +50,18 @@ export default {
     } catch (error) {
       console.log(error)
     }
+  },
+
+  alert: ({ commit }, alert, alertType, timeout = 5000) => {
+    const id = uuid.v4()
+    const payload = {
+      id,
+      alert,
+      alertType,
+    }
+
+    commit('ADD_ALERT', payload)
+
+    setTimeout(() => commit('REMOVE_ALERT', payload.id), timeout)
   },
 }

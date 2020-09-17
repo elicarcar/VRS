@@ -1,71 +1,84 @@
 <template>
-  <div class="m-5 pb-5">
-    <!-- <div>
-      <b-alert show v-for="alert in alerts" :key="alert.id" variant="danger">
-        {{ alert.alert }}
-      </b-alert>
-    </div> -->
+  <div>
+    <div>
+      <div class="alert-block">
+        <b-alert
+          show
+          v-for="alert in alerts"
+          variant="danger"
+          :class="alerts.length ? 'fadeIn fadeOut' : ''"
+          :key="alert.id"
+        >
+          {{ alert.alert }}
+        </b-alert>
+      </div>
+    </div>
+    <div class="m-5 pb-5">
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group
+          id="input-group-1"
+          label="Email address:"
+          label-for="input-1"
+          description="We'll never share your email with anyone else."
+        >
+          <b-form-input
+            id="input-1"
+            v-model="visitor.email"
+            type="email"
+            required
+            placeholder="Enter email"
+          ></b-form-input>
+        </b-form-group>
 
-    <b-form @submit.prevent="onSubmit">
-      <b-form-group
-        id="input-group-1"
-        label="Email address:"
-        label-for="input-1"
-        description="We'll never share your email with anyone else."
-      >
-        <b-form-input
-          id="input-1"
-          v-model="visitor.email"
-          type="email"
-          required
-          placeholder="Enter email"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group
+          id="input-group-2"
+          label="First Name:"
+          label-for="input-2"
+        >
+          <b-form-input
+            id="input-2"
+            v-model="visitor.first_name"
+            required
+            placeholder="Enter first name"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="Company:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="visitor.company_name"
-          required
-          placeholder="Enter company name"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group id="input-group-2" label="Last Name:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="visitor.last_name"
+            required
+            placeholder="Enter last name"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="First Name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="visitor.first_name"
-          required
-          placeholder="Enter first name"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group id="input-group-2" label="Company:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="visitor.company_name"
+            required
+            placeholder="Enter company name"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="Last Name:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="visitor.last_name"
-          required
-          placeholder="Enter last name"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group
+          id="input-group-3"
+          label="Appointment With:"
+          label-for="input-3"
+        >
+          <b-form-select
+            id="input-3"
+            v-model="visitor.current_appointment.person"
+            :options="people"
+            value-field="id"
+            text-field="name"
+            required
+          ></b-form-select>
+        </b-form-group>
 
-      <b-form-group
-        id="input-group-3"
-        label="Appointment With:"
-        label-for="input-3"
-      >
-        <b-form-select
-          id="input-3"
-          v-model="visitor.current_appointment.person"
-          :options="people"
-          value-field="id"
-          text-field="name"
-          required
-        ></b-form-select>
-      </b-form-group>
-
-      <b-button type="submit" variant="primary">Submit</b-button>
-    </b-form>
+        <b-button type="submit" variant="primary">Submit</b-button>
+      </b-form>
+    </div>
   </div>
 </template>
 
@@ -90,14 +103,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(['people']),
+    ...mapState(['people', 'alerts']),
   },
   methods: {
-    ...mapActions(['getPeople', 'addVisitor']),
+    ...mapActions(['getPeople', 'addVisitor', 'alert']),
     async onSubmit() {
-      if (this.visitor.first_name.length < 3) {
+      if (
+        this.visitor.first_name.length < 3 ||
+        this.visitor.last_name.length < 3
+      ) {
         const errorMsg = 'Your name should be more than 3 characters.'
-        console.log(errorMsg)
+        this.alert(errorMsg, 'danger')
         return
       }
 
@@ -111,6 +127,7 @@ export default {
         this.$router.push({ name: 'Visitors' })
       } catch (error) {
         console.log(error)
+        this.alert(error, 'danger')
       } finally {
         this.visitor = {
           id: uuid.v4(),

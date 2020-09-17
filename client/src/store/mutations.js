@@ -18,4 +18,12 @@ export default {
   GET_VISITS: (state, visits) => {
     state.visits = visits
   },
+
+  ADD_ALERT: (state, alert) => {
+    state.alerts = [...state.alerts, alert]
+  },
+
+  REMOVE_ALERT: (state, id) => {
+    state.alerts = state.alerts.filter((alert) => alert.id !== id)
+  },
 }
