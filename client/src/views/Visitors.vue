@@ -39,6 +39,12 @@ export default {
     ...mapGetters(['activeVisitors']),
   },
 
+  watch: {
+    activeVisitors: function reload() {
+      this.$store.dispatch('getAllVisitors')
+    },
+  },
+
   methods: {
     ...mapActions(['getAllVisitors', 'updateVisitor']),
 

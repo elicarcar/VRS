@@ -11,8 +11,8 @@ export default {
     state.visitors = visitors
   },
 
-  UPDATE_CURRENT_VISITORS: (state, currentVisitors) => {
-    return (state.visitors = currentVisitors)
+  UPDATE_CURRENT_VISITORS: (state) => {
+    state.visitors
   },
 
   GET_VISITS: (state, visits) => {

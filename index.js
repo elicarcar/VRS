@@ -15,6 +15,10 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(csrfMiddleware)
 
+app.get('/', async (req, res) => {
+  res.end('Hello')
+})
+
 app.get('/auth', async (req, res) => {
   try {
     res.redirect(
@@ -23,15 +27,19 @@ app.get('/auth', async (req, res) => {
       }&response_type=code&scope=identity&state=${req.csrfToken()}`
     )
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
 })
+
+//SEE IF HEROKU GETS REDIRECTED
 
 app.get('/callback', function (req, res) {
   var code = req.query.code || null
   var state = req.query.state || null
   console.log(code + state)
 })
+
 // POST visitor
 app.post('/visitor', async (req, res) => {
   try {
@@ -42,14 +50,26 @@ app.post('/visitor', async (req, res) => {
       company_name,
       current_appointment,
     } = req.body
-
-    const newVisitor = await pool.query(
-      'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
-      [first_name, last_name, email, company_name, current_appointment]
+    const registeredVisitor = await pool.query(
+      'SELECT EXISTS(SELECT * FROM visitors where email=$1)',
+      [email]
     )
-    res.json(newVisitor.rows[0])
+    if (registeredVisitor) {
+      const updateVisitor = await pool.query(
+        'UPDATE visitors SET current_appointment = $1, is_logged = $2 WHERE email = $3',
+        [current_appointment, true, email]
+      )
+      res.json(updateVisitor.rows)
+    } else {
+      const newVisitor = await pool.query(
+        'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
+        [first_name, last_name, email, company_name, current_appointment]
+      )
+      res.json(newVisitor.rows[0])
+    }
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
 })
 
@@ -61,12 +81,9 @@ app.get('/visitors', async (req, res) => {
 
     res.json(allVisitors.rows)
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
-})
-
-app.listen(5000, () => {
-  console.log(`App started on port 5000`)
 })
 
 //GET a single visitor
@@ -80,7 +97,8 @@ app.get('/visitor/:id', async (req, res) => {
 
     res.json(visitor.rows)
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
 })
 
@@ -117,7 +135,8 @@ app.post('/visitor/visits/:v_id', async (req, res) => {
     )
     res.json(currentVisitors.rows)
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
 })
 
@@ -128,6 +147,11 @@ app.get('/visits', async (req, res) => {
     const visits = await pool.query('SELECT * FROM visits')
     res.json(visits.rows)
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    res.status(500).send('Server error')
   }
+})
+
+app.listen(5000, () => {
+  console.log('server runs successfully')
 })
