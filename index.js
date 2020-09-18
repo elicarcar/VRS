@@ -8,26 +8,25 @@ const cookieParser = require('cookie-parser')
 app.use(cors())
 app.use(express.json())
 
-// const csrfMiddleware = csurf({
-//   cookie: true,
-// })
+const csrfMiddleware = csurf({
+  cookie: true,
+})
 
 app.use(cookieParser())
-// app.use(csrfMiddleware)
+app.use(csrfMiddleware)
 
 app.get('/', async (req, res) => {
   res.end('Hello')
+  console.log(req.csrfToken())
 })
 
 app.get('/auth', async (req, res) => {
   try {
     res.redirect(
-      `https://id.heroku.com/oauth/authorize?client_id=${
-        process.env.CLIENT_ID
-      }&response_type=code&scope=identity&state=${req.csrfToken()}`
+      `https://id.heroku.com/oauth/authorize?client_id=68b3b7e3-0aea-417c-bbd0-6f97df91b03e&response_type=code&scope=identity&state=${req.csrfToken()}`
     )
   } catch (error) {
-    console.log(error.stack)
+    console.log(error)
     res.status(500).send('Server error')
   }
 })
@@ -38,6 +37,7 @@ app.get('/callback', function (req, res) {
   var code = req.query.code || null
   var state = req.query.state || null
   console.log(code + state)
+  res.send('hello')
 })
 
 // POST visitor

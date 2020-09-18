@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="visit-form">
     <div>
       <div class="alert-block">
         <b-alert

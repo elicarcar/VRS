@@ -1,6 +1,6 @@
 import axios from 'axios'
 import uuid from 'uuid'
-import { base_URL } from '../utils'
+import { base_URL } from '../utils/url.js'
 
 export default {
   getPeople: async ({ commit }) => {
