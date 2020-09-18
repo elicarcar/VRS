@@ -1,6 +1,11 @@
 @import '../base/_mixins';
 $animation-delay: 4000ms;
 
+.visit-form {
+  max-width: 500px;
+  margin: 3rem auto;
+}
+
 .fadeIn {
   animation-name: fadeIn;
   animation-duration: 1s;

@@ -1,0 +1,27 @@
+.panel {
+  text-align: left;
+  max-width: 430px;
+  margin: 0 auto 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  position: relative;
+  transform: translateX(50%);
+  transform: translateY(50%);
+  .form-container {
+    h2 {
+      margin: 0px 20px 0;
+      padding-top: 40px;
+      line-height: 1.5;
+      font-size: 24px;
+      text-align: center;
+    }
+    form {
+      padding: 40px;
+      label {
+        color: #62748e;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}
