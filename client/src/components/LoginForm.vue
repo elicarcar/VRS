@@ -34,7 +34,7 @@
             >Check me out</label
           >
         </div>
-        <button type="submit" class="btn btn-primary" @click.prevent="login">
+        <button type="submit" class="btn btn-primary" @click.prevent="submit">
           Login
         </button>
       </form>
@@ -61,12 +61,14 @@ export default {
 
   methods: {
     ...mapActions(['alert', 'login']),
-    async login() {
+    submit: async function() {
       try {
         const token = Buffer.from(
           `${this.formData.email}:${this.formData.password}`,
           'utf8'
         ).toString('base64')
+
+        this.login(token)
       } catch (error) {
         console.log(error)
         this.alert(error.message, 'warning')

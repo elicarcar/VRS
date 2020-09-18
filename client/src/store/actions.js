@@ -3,6 +3,24 @@ import uuid from 'uuid'
 import { base_URL } from '../utils/url.js'
 
 export default {
+  login: async ({ commit }, token) => {
+    const url = 'https://api.heroku.com/oauth/authorizations'
+    try {
+      await axios({
+        method: 'post', //you can set what request you want to be
+        url: 'https://api.heroku.com/oauth/authorizations',
+        headers: {
+          Accept: 'application/vnd.heroku+json; version=3',
+          Authorization: 'Basic ' + token,
+        },
+      }).then(function(res) {
+        console.log(res.data)
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
   getPeople: async ({ commit }) => {
     axios
       .get('https://5f5786361a07d600167e6f3f.mockapi.io/api/v1/people')
