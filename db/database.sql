@@ -1,5 +1,11 @@
 CREATE DATABASE visitor_registration_system_01
 
+CREATE TABLE users (
+    id BIGSERIAL NOT NULL,
+    token CHAR(32) NOT NULL UNIQUE,
+    joined TIMESTAMP WITH TIME ZONE NOT NULL 
+);
+
 CREATE TABLE visitors (
     id BIGSERIAL NOT NULL PRIMARY KEY, 
     first_name VARCHAR(30) NOT NULL, 

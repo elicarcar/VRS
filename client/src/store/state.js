@@ -1,6 +1,12 @@
 export default {
   auth: {
-    user: null,
+    user: {
+      token: localStorage.getItem('authToken'),
+      id: null,
+      email: '',
+      full_name: '',
+      isAuthenticated: false,
+    },
     isLoading: true,
   },
   visitor: null,

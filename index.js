@@ -2,42 +2,14 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const pool = require('./db/db')
-const csurf = require('csurf')
-const cookieParser = require('cookie-parser')
+const auth = require('./middleware/auth')
+const axios = require('axios')
 
 app.use(cors())
 app.use(express.json())
 
-const csrfMiddleware = csurf({
-  cookie: true,
-})
-
-app.use(cookieParser())
-app.use(csrfMiddleware)
-
 app.get('/', async (req, res) => {
   res.end('Hello')
-  console.log(req.csrfToken())
-})
-
-app.get('/auth', async (req, res) => {
-  try {
-    res.redirect(
-      `https://id.heroku.com/oauth/authorize?client_id=68b3b7e3-0aea-417c-bbd0-6f97df91b03e&response_type=code&scope=identity&state=${req.csrfToken()}`
-    )
-  } catch (error) {
-    console.log(error)
-    res.status(500).send('Server error')
-  }
-})
-
-//SEE IF HEROKU GETS REDIRECTED
-
-app.get('/callback', function (req, res) {
-  var code = req.query.code || null
-  var state = req.query.state || null
-  console.log(code + state)
-  res.send('hello')
 })
 
 // POST visitor
@@ -75,7 +47,7 @@ app.post('/visitor', async (req, res) => {
 
 // GET all visitors
 
-app.get('/visitors', async (req, res) => {
+app.get('/visitors', auth, async (req, res) => {
   try {
     const allVisitors = await pool.query('SELECT * FROM visitors')
 
@@ -88,7 +60,7 @@ app.get('/visitors', async (req, res) => {
 
 //GET a single visitor
 
-app.get('/visitor/:id', async (req, res) => {
+app.get('/visitor/:id', auth, async (req, res) => {
   try {
     const { id } = req.params
     const visitor = await pool.query('SELECT * FROM VISITORS WHERE id = $1', [
@@ -102,9 +74,44 @@ app.get('/visitor/:id', async (req, res) => {
   }
 })
 
+// USER
+
+app.post('/auth', async (req, res) => {
+  const { string } = req.body
+
+  if (!string) {
+    return res.status(401).json({ msg: 'No token, authorization denied.' })
+  }
+
+  try {
+    const url = 'https://api.heroku.com/oauth/authorizations'
+    const headers = {
+      Accept: 'application/vnd.heroku+json; version=3',
+      Authorization: 'Basic ' + string,
+    }
+
+    const resp = await axios.post(url, {}, { headers })
+
+    const {
+      data: {
+        user: { id },
+        access_token: { token },
+      },
+    } = resp
+
+    await pool.query(
+      'INSERT INTO users (token, uid) VALUES ($1, $2) RETURNING * ',
+      [token, id]
+    )
+    res.send(resp.data)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 //POST VISIT
 
-app.post('/visitor/visits/:v_id', async (req, res) => {
+app.post('/visitor/visits/:v_id', auth, async (req, res) => {
   try {
     const { v_id } = req.params
     await pool.query(
@@ -142,7 +149,7 @@ app.post('/visitor/visits/:v_id', async (req, res) => {
 
 // GET all visits
 
-app.get('/visits', async (req, res) => {
+app.get('/visits', auth, async (req, res) => {
   try {
     const visits = await pool.query('SELECT * FROM visits')
     res.json(visits.rows)

@@ -1,4 +1,20 @@
 export default {
+  AUTH_SUCCESS: (state, user) => {
+    const { id, email, full_name } = user
+    state.auth.user = { id, email, full_name }
+    state.auth.user.isAuthenticated = true
+  },
+
+  AUTH_ERROR: (state) => {
+    localStorage.removeItem('token')
+    state.auth.user = {
+      id: null,
+      email: '',
+      full_name: '',
+    }
+    state.auth.user.isAuthenticated = false
+  },
+
   GET_PEOPLE: (state, people) => {
     state.people = people
   },
