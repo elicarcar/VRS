@@ -3,7 +3,7 @@ CREATE DATABASE visitor_registration_system_01
 CREATE TABLE users (
     id BIGSERIAL NOT NULL,
     token CHAR(32) NOT NULL UNIQUE,
-    joined TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() at time zone 'utc'),
 );
 
 CREATE TABLE visitors (

@@ -19,6 +19,14 @@
         /></svg
     ></router-link>
 
+    <!-- <LoginButtons /> -->
     <router-link to="/visitors" class="visitors">Visitors</router-link>
   </div>
 </template>
+
+<script>
+// import LoginButtons from './LoginButtons'
+export default {
+  name: 'Nav',
+}
+</script>
