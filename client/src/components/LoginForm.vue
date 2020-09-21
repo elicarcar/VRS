@@ -63,12 +63,12 @@ export default {
     ...mapActions(['alert', 'login']),
     submit: async function() {
       try {
-        const token = Buffer.from(
+        const string = Buffer.from(
           `${this.formData.email}:${this.formData.password}`,
           'utf8'
         ).toString('base64')
 
-        this.login(token)
+        this.login(string)
       } catch (error) {
         console.log(error)
         this.alert(error.message, 'warning')

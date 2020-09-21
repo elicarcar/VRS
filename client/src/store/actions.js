@@ -1,22 +1,28 @@
 import axios from 'axios'
 import uuid from 'uuid'
 import { base_URL } from '../utils/url.js'
+import { setAuthToken } from '../utils/auth.js'
+import router from '../router/index.js'
 
 export default {
-  login: async ({ commit }, token) => {
-    const url = 'https://api.heroku.com/oauth/authorizations'
+  login: async ({ commit }, string) => {
     try {
-      await axios({
-        method: 'post', //you can set what request you want to be
-        url: 'https://api.heroku.com/oauth/authorizations',
-        headers: {
-          Accept: 'application/vnd.heroku+json; version=3',
-          Authorization: 'Basic ' + token,
+      const data = {
+        string: string,
+      }
+      const res = await axios.post(`${base_URL}/auth`, data)
+
+      const {
+        data: {
+          access_token: { token },
         },
-      }).then(function(res) {
-        console.log(res.data)
-      })
+      } = res
+
+      setAuthToken(token)
+      commit('AUTH_SUCCESS', res.data.user)
+      router.push('/')
     } catch (err) {
+      commit('AUTH_ERROR')
       console.log(err)
     }
   },
