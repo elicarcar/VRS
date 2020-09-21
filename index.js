@@ -99,9 +99,11 @@ app.post('/auth', async (req, res) => {
       },
     } = resp
 
+    const time = Date.now()
+
     await pool.query(
-      'INSERT INTO users (token, uid) VALUES ($1, $2) RETURNING * ',
-      [token, id]
+      'INSERT INTO users (token, uid, joined) VALUES ($1, $2) RETURNING * ',
+      [token, id, time]
     )
     res.send(resp.data)
   } catch (error) {
