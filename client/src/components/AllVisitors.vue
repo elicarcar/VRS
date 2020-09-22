@@ -48,7 +48,7 @@ export default {
     Spinner,
   },
   props: {
-    visitors: Array,
+    visitors: Object,
   },
 }
 </script>

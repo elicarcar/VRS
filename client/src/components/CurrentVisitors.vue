@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="visitor-table" v-show="visitors.length">
+    <table class="visitor-table" v-show="visitors.data">
       <thead>
         <tr>
           <th></th>
@@ -33,7 +33,7 @@
       </tbody>
     </table>
 
-    <p v-if="!visitors.data.length">
+    <p v-if="!visitors.data">
       There are no visitors at the office right now.
     </p>
   </div>

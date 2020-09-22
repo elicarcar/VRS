@@ -30,10 +30,14 @@
 
 <script>
 import Nav from './components/Nav'
+import { getAuthToken } from './utils/auth.js'
 export default {
   name: 'Home',
   components: {
     Nav,
+  },
+  created() {
+    getAuthToken(localStorage.token)
   },
 }
 </script>
