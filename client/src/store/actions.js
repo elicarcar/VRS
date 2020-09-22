@@ -4,6 +4,7 @@ import { base_URL } from '../utils/url.js'
 import { setAuthToken } from '../utils/auth.js'
 import store from '../store'
 import router from '../router/index.js'
+import people from '../data/people.js'
 
 export default {
   loadUser: async ({ commit }) => {
@@ -15,7 +16,18 @@ export default {
       const res = await axios.get(`${base_URL}/user`)
 
       commit('LOAD_USER', res.data)
-      router.push('/')
+      router.push('/').catch((err) => {
+        // Ignore the vuex err regarding  navigating to the page they are already on.
+        if (
+          err.name !== 'NavigationDuplicated' &&
+          !err.message.includes(
+            'Avoided redundant navigation to current location'
+          )
+        ) {
+          // But print any other errors to the console
+          logError(err)
+        }
+      })
     } catch (err) {
       commit('AUTH_ERROR')
       console.log(err)
@@ -41,7 +53,7 @@ export default {
 
   getPeople: async ({ commit }) => {
     axios
-      .get('https://5f5786361a07d600167e6f3f.mockapi.io/api/v1/people')
+      .get('https://my-json-server.typicode.com/elicarcar/mockAPI/people')
       .then((res) => {
         commit('GET_PEOPLE', res.data)
       })
@@ -65,6 +77,7 @@ export default {
       .get(`${base_URL}/visitors`)
       .then((res) => {
         commit('GET_VISITORS', res.data)
+        console.log(res.data)
       })
       .catch((error) => {
         commit('ERROR_VISITORS', error.message)
