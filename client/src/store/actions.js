@@ -2,24 +2,25 @@ import axios from 'axios'
 import uuid from 'uuid'
 import { base_URL } from '../utils/url.js'
 import { setAuthToken } from '../utils/auth.js'
+import store from '../store'
 import router from '../router/index.js'
 
 export default {
-  // loadUser: async ({ commit }) => {
-  //   if (localStorage.authToken) {
-  //     setAuthToken(localStorage.authToken)
-  //   }
+  loadUser: async ({ commit }) => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
 
-  //   try {
-  //     const res = await axios.get('/user')
+    try {
+      const res = await axios.get(`${base_URL}/user`)
 
-  //     commit(USER_LOADED, res.data)
-  //     console.log(res.data)
-  //   } catch (err) {
-  //     console.log(err)
-  //     commit(AUTH_ERROR)
-  //   }
-  // },
+      commit('LOAD_USER', res.data)
+      router.push('/')
+    } catch (err) {
+      commit('AUTH_ERROR')
+      console.log(err)
+    }
+  },
 
   login: async ({ commit }, string) => {
     try {
@@ -28,15 +29,10 @@ export default {
       }
       const res = await axios.post(`${base_URL}/auth`, data)
 
-      const {
-        data: {
-          access_token: { token },
-        },
-      } = res
+      setAuthToken(res.data)
+      commit('AUTH_SUCCESS')
 
-      setAuthToken(token)
-      commit('AUTH_SUCCESS', res.data.user)
-      router.push('/')
+      store.dispatch('loadUser')
     } catch (err) {
       commit('AUTH_ERROR')
       console.log(err)

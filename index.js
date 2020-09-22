@@ -4,23 +4,13 @@ const cors = require('cors')
 const pool = require('./db/db')
 const auth = require('./middleware/auth')
 const axios = require('axios')
+const jwt = require('jsonwebtoken')
 
 app.use(cors())
 app.use(express.json())
 
 app.get('/', async (req, res) => {
   res.end('Hello')
-})
-
-//LOAD USER
-
-app.get('/user', async (req, res) => {
-  try {
-    console.log(req.user)
-  } catch (error) {
-    console.error(error.message)
-    res.status(500).send('Server error')
-  }
 })
 
 // POST visitor
@@ -85,7 +75,16 @@ app.get('/visitor/:id', auth, async (req, res) => {
   }
 })
 
-// // USER
+//USER
+
+app.get('/user', auth, async (req, res) => {
+  try {
+    res.send(req.user)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ msg: 'Internal server error.' })
+  }
+})
 
 app.post('/auth', async (req, res) => {
   const { string } = req.body
@@ -105,16 +104,25 @@ app.post('/auth', async (req, res) => {
 
     const {
       data: {
-        user: { id },
+        user: { id, email, full_name },
         access_token: { token },
       },
     } = resp
 
-    await pool.query(
-      'INSERT INTO users (token, uid) VALUES ($1, $2) RETURNING * ',
-      [token, id]
-    )
-    res.send(resp.data)
+    const user = {
+      id,
+      full_name,
+      email,
+      access_token: token,
+    }
+
+    jwt.sign({ user }, 'secretkey', { expiresIn: '10h' }, (err, token) => {
+      if (err) {
+        res.json({ err })
+      } else {
+        res.send(token)
+      }
+    })
   } catch (error) {
     console.log(error)
   }
