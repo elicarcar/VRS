@@ -1,5 +1,9 @@
 export default {
-  AUTH_SUCCESS: (state, user) => {
+  AUTH_SUCCESS: (state) => {
+    state.auth.user.isAuthenticated = true
+  },
+
+  LOAD_USER: (state, user) => {
     const { id, email, full_name } = user
     state.auth.user.id = id
     state.auth.user.email = email

@@ -37,7 +37,10 @@ export default {
     Nav,
   },
   created() {
-    getAuthToken(localStorage.token)
+    if (localStorage.token) {
+      getAuthToken(localStorage.token)
+    }
+    this.$store.dispatch('loadUser')
   },
 }
 </script>

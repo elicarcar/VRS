@@ -1,12 +1,5 @@
 CREATE DATABASE visitor_registration_system_01
 
-CREATE TABLE users (
-    id BIGSERIAL NOT NULL,
-    uid uuid,
-    token CHAR(40) NOT NULL UNIQUE,
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() at time zone 'utc'),
-);
-
 CREATE TABLE visitors (
     id BIGSERIAL NOT NULL PRIMARY KEY, 
     first_name VARCHAR(30) NOT NULL, 
