@@ -12,6 +12,17 @@ app.get('/', async (req, res) => {
   res.end('Hello')
 })
 
+//LOAD USER
+
+app.get('/user', async (req, res) => {
+  try {
+    console.log(req.user)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send('Server error')
+  }
+})
+
 // POST visitor
 app.post('/visitor', async (req, res) => {
   try {
@@ -74,7 +85,7 @@ app.get('/visitor/:id', auth, async (req, res) => {
   }
 })
 
-// USER
+// // USER
 
 app.post('/auth', async (req, res) => {
   const { string } = req.body

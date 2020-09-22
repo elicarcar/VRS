@@ -1,7 +1,9 @@
 export default {
   AUTH_SUCCESS: (state, user) => {
     const { id, email, full_name } = user
-    state.auth.user = { id, email, full_name }
+    state.auth.user.id = id
+    state.auth.user.email = email
+    state.auth.user.full_name = full_name
     state.auth.user.isAuthenticated = true
   },
 
@@ -11,8 +13,8 @@ export default {
       id: null,
       email: '',
       full_name: '',
+      isAuthenticated: false,
     }
-    state.auth.user.isAuthenticated = false
   },
 
   GET_PEOPLE: (state, people) => {
@@ -20,11 +22,17 @@ export default {
   },
 
   ADD_VISITORS: (state, visitor) => {
-    state.visitors = [...state.visitors, visitor]
+    state.visitors.data = [...state.visitors.data, visitor]
+    state.visitors.isLoading = false
   },
 
   GET_VISITORS: (state, visitors) => {
-    state.visitors = visitors
+    state.visitors.data = visitors
+    state.visitors.isLoading = false
+  },
+
+  ERROR_VISITORS: (state, error) => {
+    state.visitors.errors = error
   },
 
   UPDATE_CURRENT_VISITORS: (state) => {
