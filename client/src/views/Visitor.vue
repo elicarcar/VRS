@@ -30,7 +30,9 @@ export default {
   mounted() {
     this.$store.dispatch('getVisits')
 
-    const visitant = this.visitors.find((v) => v.id === this.$route.params.id)
+    const visitant = this.visitors.data.find(
+      (v) => v.id === this.$route.params.id
+    )
 
     this.visitor = visitant
   },

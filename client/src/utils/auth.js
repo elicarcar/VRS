@@ -17,7 +17,6 @@ export function clearAuthToken() {
 }
 
 export function isLoggedIn() {
-  const isAuthenticated = store.state.auth.user.isAuthenticated
   const authToken = getAuthToken()
-  return !!authToken && !!isAuthenticated
+  return !!authToken
 }
