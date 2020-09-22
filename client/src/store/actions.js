@@ -5,6 +5,22 @@ import { setAuthToken } from '../utils/auth.js'
 import router from '../router/index.js'
 
 export default {
+  // loadUser: async ({ commit }) => {
+  //   if (localStorage.authToken) {
+  //     setAuthToken(localStorage.authToken)
+  //   }
+
+  //   try {
+  //     const res = await axios.get('/user')
+
+  //     commit(USER_LOADED, res.data)
+  //     console.log(res.data)
+  //   } catch (err) {
+  //     console.log(err)
+  //     commit(AUTH_ERROR)
+  //   }
+  // },
+
   login: async ({ commit }, string) => {
     try {
       const data = {
@@ -54,7 +70,10 @@ export default {
       .then((res) => {
         commit('GET_VISITORS', res.data)
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        commit('ERROR_VISITORS', error.message)
+        console.log(error)
+      })
   },
 
   updateVisitor: async ({ commit }, id) => {

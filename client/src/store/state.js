@@ -11,7 +11,11 @@ export default {
   },
   visitor: null,
   people: [],
-  visitors: [],
+  visitors: {
+    isLoading: true,
+    data: [],
+    errors: {},
+  },
   visits: [],
   alerts: [],
 }

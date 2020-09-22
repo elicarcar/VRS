@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="visitor-table" v-show="visitors.length">
+    <table class="visitor-table" v-show="!visitors.isLoading">
       <thead>
         <tr>
           <th></th>
@@ -16,7 +16,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr v-for="visitor in visitors" :key="visitor.id">
+        <tr v-for="visitor in visitors.data" :key="visitor.id">
           <td class="status">
             <span
               :class="[visitor.is_logged ? 'logged-in' : 'logged-out']"
@@ -31,16 +31,22 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="!visitors.length || !visitors">
+    <p v-if="!visitors.data.length && !visitors.isLoading">
       No visitors yet.
     </p>
+    <div v-if="visitors.isLoading">
+      <Spinner />
+    </div>
   </div>
 </template>
 
 <script>
+import Spinner from '../components/Spinner'
 export default {
   name: 'AllVisitors',
-
+  components: {
+    Spinner,
+  },
   props: {
     visitors: Array,
   },
