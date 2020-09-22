@@ -27,20 +27,32 @@ app.post('/visitor', async (req, res) => {
       'SELECT EXISTS(SELECT * FROM visitors where email=$1)',
       [email]
     )
-    if (registeredVisitor) {
-      const updateVisitor = await pool.query(
+
+    if (registeredVisitor.rows[0].exists) {
+      pool.query(
         'UPDATE visitors SET current_appointment = $1, is_logged = $2 WHERE email = $3',
-        [current_appointment, true, email]
+        [current_appointment, true, email],
+        (err, result) => {
+          if (err) {
+            return console.error('Error executing query', err.stack)
+          }
+          console.log(result.rows)
+        }
       )
-      res.json(updateVisitor.rows)
     } else {
-      const newVisitor = await pool.query(
-        'INSERT INTO visitors ( first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
-        [first_name, last_name, email, company_name, current_appointment]
+      pool.query(
+        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
+        [first_name, last_name, email, company_name, current_appointment],
+        (err, result) => {
+          if (err) {
+            return console.error('Error executing query', err.stack)
+          }
+          console.log(result.rows[0])
+        }
       )
-      res.json(newVisitor.rows[0])
     }
   } catch (error) {
+    console.log(error)
     console.log(error.stack)
     res.status(500).send('Server error')
   }

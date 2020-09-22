@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       showOnline: false,
+      currentlyActive: null,
     }
   },
 

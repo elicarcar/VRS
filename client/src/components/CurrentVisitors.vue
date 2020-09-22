@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="visitor-table" v-show="visitors.data">
+    <table class="visitor-table" v-show="visitors.length">
       <thead>
         <tr>
           <th></th>
@@ -16,7 +16,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr v-for="visitor in visitors.data" :key="visitor.id">
+        <tr v-for="visitor in visitors" :key="visitor.id">
           <td class="status">
             <span
               :class="[visitor.is_logged ? 'logged-in' : 'logged-out']"
@@ -33,7 +33,7 @@
       </tbody>
     </table>
 
-    <p v-if="!visitors.data">
+    <p v-if="!visitors.length">
       There are no visitors at the office right now.
     </p>
   </div>

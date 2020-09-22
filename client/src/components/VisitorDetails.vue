@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="visitor.current_appointment">
-      <b-button v-b-toggle.collapse-1 variant="default"
+      <b-button v-b-toggle.collapse-1 variant="default" class="text-shadow-30"
         >Current Appointment</b-button
       >
       <b-collapse id="collapse-1" class="mt-2">
@@ -17,10 +17,12 @@
       </b-collapse>
     </div>
 
-    <div v-if="visits.length">
-      <b-button v-b-toggle.collapse-1 variant="default">Appointments</b-button>
+    <div v-show="visits.length">
+      <b-button v-b-toggle.collapse-1 variant="default" class="text-shadow-30"
+        >Appointments</b-button
+      >
       <b-collapse id="collapse-1" class="mt-2">
-        <b-card v-for="visit in visits" :key="visit.id">
+        <b-card>
           <table class="card-text visitor-table">
             <thead>
               <tr>
@@ -40,7 +42,7 @@
                 <th>Ended</th>
               </tr>
             </tfoot>
-            <tbody>
+            <tbody v-for="visit in visits" :key="visit.id">
               <tr>
                 <td>{{ visitor.first_name }}</td>
                 <td>{{ visitor.email }}</td>
@@ -53,17 +55,19 @@
         </b-card>
       </b-collapse>
     </div>
-    <div v-else>loading</div>
   </div>
 </template>
 
 <script>
 import { DateTime } from 'luxon'
 import { mapActions, mapState } from 'vuex'
+import Spinner from './Spinner'
 
 export default {
   name: 'VisitorDetails',
-
+  components: {
+    Spinner,
+  },
   props: {
     visitor: Object,
     visits: Array,
