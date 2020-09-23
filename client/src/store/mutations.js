@@ -11,8 +11,16 @@ export default {
     state.auth.user.isAuthenticated = true
   },
 
+  LOGOUT: (state) => {
+    state.auth.user = {
+      id: null,
+      email: '',
+      full_name: '',
+      isAuthenticated: false,
+    }
+  },
+
   AUTH_ERROR: (state) => {
-    localStorage.removeItem('token')
     state.auth.user = {
       id: null,
       email: '',

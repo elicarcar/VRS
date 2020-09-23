@@ -1,14 +1,23 @@
 .nav {
   display: flex;
+  justify-content: space-between;
   svg {
     font-size: 25px;
   }
-  a {
-    margin-left: 10px;
-    padding: 10px;
+  div {
+    a {
+      margin-left: 10px;
+      padding: 10px;
+    }
   }
 
   .visitors {
     font-size: 21px;
   }
+}
+
+.nav-text {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 21px;
 }

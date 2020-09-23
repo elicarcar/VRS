@@ -36,7 +36,7 @@ app.post('/visitor', async (req, res) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          console.log(result.rows)
+          return result.rows
         }
       )
     } else {
@@ -47,12 +47,11 @@ app.post('/visitor', async (req, res) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          console.log(result.rows[0])
+          return result.rows[0]
         }
       )
     }
   } catch (error) {
-    console.log(error)
     console.log(error.stack)
     res.status(500).send('Server error')
   }
