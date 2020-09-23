@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Nav />
-    <router-view />
+    <transition name="router-anim">
+      <router-view />
+    </transition>
   </div>
 </template>
 
@@ -24,6 +26,39 @@
     &.router-link-exact-active {
       color: #42b983;
     }
+  }
+}
+
+.page {
+  position: fixed;
+  width: 100%;
+}
+
+.router-anim-enter-active {
+  animation: coming 0.5s;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.router-anim-leave-active {
+  animation: going 0.5s;
+}
+
+@keyframes coming {
+  from {
+    transform: translateX(-50px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes going {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50px);
   }
 }
 </style>

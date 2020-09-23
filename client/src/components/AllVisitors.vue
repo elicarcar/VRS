@@ -1,6 +1,9 @@
 <template>
   <div>
-    <table class="visitor-table" v-show="!visitors.isLoading">
+    <table
+      class="visitor-table"
+      v-show="!visitors.isLoading && visitors.data.length"
+    >
       <thead>
         <tr>
           <th></th>
