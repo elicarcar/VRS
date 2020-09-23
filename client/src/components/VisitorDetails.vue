@@ -11,7 +11,7 @@
             {{ visitor.current_appointment.person.name }} <br />
 
             <strong>Starting Time:</strong>
-            <!-- {{ visitor.current_appointment.starting_time | date }} -->
+            {{ visitor.current_appointment.start_time | date }}
           </p>
         </b-card>
       </b-collapse>
@@ -47,8 +47,8 @@
                 <td>{{ visitor.first_name }}</td>
                 <td>{{ visitor.email }}</td>
                 <td>{{ visit.person.person.name }}</td>
-                <td>{{ visit.start_time }}</td>
-                <td>{{ visit.end_time }}</td>
+                <td>{{ visit.start_time | date }}</td>
+                <td>{{ visit.end_time | date }}</td>
               </tr>
             </tbody>
           </table>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
+import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz'
 import { mapActions, mapState } from 'vuex'
 import Spinner from './Spinner'
 
@@ -73,10 +73,21 @@ export default {
     visits: Array,
   },
 
-  //   filters: {
-  //     date: function(date) {
-  //       return DateTime.DATE_SHORT(date)
-  //     },
-  //   },
+  filters: {
+    date: function(date) {
+      const timeZone = 'Europe/Amsterdam'
+      const zonedDate = utcToZonedTime(date, timeZone)
+
+      const datePattern = 'd-M-yyyy'
+      const timePattern = 'HH:mm'
+      const justDate = format(zonedDate, datePattern, {
+        timeZone: 'Europe/Amsterdam',
+      })
+      const time = format(zonedDate, timePattern, {
+        timeZone: 'Europe/Amsterdam',
+      })
+      return `${justDate} - ${time}`
+    },
+  },
 }
 </script>

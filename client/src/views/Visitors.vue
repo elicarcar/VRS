@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="d-flex justify-content-center align-items-center">
       <b-form-checkbox switch v-model="showOnline"></b-form-checkbox>
       <h1>{{ showOnline ? 'Online Visitors' : 'Visitors' }}</h1>
