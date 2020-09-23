@@ -1,7 +1,7 @@
 import axios from 'axios'
 import uuid from 'uuid'
 import { base_URL } from '../utils/url.js'
-import { setAuthToken } from '../utils/auth.js'
+import { setAuthToken, clearAuthToken } from '../utils/auth.js'
 import store from '../store'
 import router from '../router/index.js'
 import people from '../data/people.js'
@@ -30,6 +30,7 @@ export default {
       })
     } catch (err) {
       commit('AUTH_ERROR')
+      clearAuthToken()
       console.log(err)
     }
   },
@@ -47,7 +48,17 @@ export default {
       store.dispatch('loadUser')
     } catch (err) {
       commit('AUTH_ERROR')
+      clearAuthToken()
       console.log(err)
+    }
+  },
+
+  logout: async ({ commit }) => {
+    try {
+      commit('LOGOUT')
+      clearAuthToken()
+    } catch (error) {
+      console.error(error)
     }
   },
 
