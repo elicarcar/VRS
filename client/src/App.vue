@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Nav />
-    <transition name="router-anim">
+    <transition name="fade" mode="out-in">
       <router-view />
     </transition>
   </div>
@@ -34,32 +34,15 @@
   width: 100%;
 }
 
-.router-anim-enter-active {
-  animation: coming 0.5s;
-  animation-delay: 0.5s;
+.fade-enter,
+.fade-leave {
   opacity: 0;
+  transform: translate(2em);
 }
 
-.router-anim-leave-active {
-  animation: going 0.5s;
-}
-
-@keyframes coming {
-  from {
-    transform: translateX(-50px);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes going {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50px);
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
 }
 </style>
 
