@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Nav />
+    <Alert />
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -48,11 +49,13 @@
 
 <script>
 import Nav from './components/Nav'
+import Alert from './components/Alert'
 import { getAuthToken } from './utils/auth.js'
 export default {
   name: 'Home',
   components: {
     Nav,
+    Alert,
   },
   created() {
     if (localStorage.token) {

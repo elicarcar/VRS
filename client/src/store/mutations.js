@@ -1,6 +1,7 @@
 export default {
   AUTH_SUCCESS: (state) => {
     state.auth.user.isAuthenticated = true
+    state.auth.user.token = localStorage.getItem('token')
   },
 
   LOAD_USER: (state, user) => {
@@ -56,7 +57,7 @@ export default {
   },
 
   ADD_ALERT: (state, alert) => {
-    state.alerts = [...state.alerts, alert]
+    state.alerts = [alert, ...state.alerts]
   },
 
   REMOVE_ALERT: (state, id) => {

@@ -10,6 +10,8 @@ export default {
   loadUser: async ({ commit }) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token)
+    } else {
+      return
     }
 
     try {
@@ -35,21 +37,31 @@ export default {
     }
   },
 
-  login: async ({ commit }, string) => {
+  login: async ({ commit, dispatch }, string) => {
     try {
       const data = {
         string: string,
       }
       const res = await axios.post(`${base_URL}/auth`, data)
 
-      setAuthToken(res.data)
       commit('AUTH_SUCCESS')
+      setAuthToken(res.data)
+      dispatch('loadUser')
 
-      store.dispatch('loadUser')
+      const alert = {
+        alert: 'You have successfully logged in',
+        alertType: 'primary',
+      }
+
+      dispatch('alert', alert)
     } catch (err) {
       commit('AUTH_ERROR')
       clearAuthToken()
-      console.log(err)
+      const errorAlert = {
+        alert: err.message,
+        alertType: 'danger',
+      }
+      dispatch('alert', errorAlert)
     }
   },
 
@@ -57,6 +69,7 @@ export default {
     try {
       commit('LOGOUT')
       clearAuthToken()
+      router.push('/login')
     } catch (error) {
       console.error(error)
     }
@@ -69,8 +82,6 @@ export default {
         commit('GET_PEOPLE', res.data)
       })
       .catch((err) => console.log(err))
-
-    console.log('fired')
   },
 
   addVisitor: async ({ commit }, visitor) => {
@@ -115,8 +126,9 @@ export default {
     }
   },
 
-  alert: ({ commit }, alert, alertType, timeout = 5000) => {
+  alert: ({ commit }, alertPayload, timeout = 3000) => {
     const id = uuid.v4()
+    const { alert, alertType } = alertPayload
     const payload = {
       id,
       alert,

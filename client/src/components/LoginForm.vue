@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'LoginForm',
   data() {
@@ -55,13 +55,17 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState(['alerts']),
-  },
-
   methods: {
     ...mapActions(['alert', 'login']),
     submit: async function() {
+      if (this.formData.password.length <= 6) {
+        const err = {
+          alert: 'Your password should be more than 6 characters.',
+          alertType: 'warning',
+        }
+        this.alert(err)
+        return
+      }
       try {
         const string = Buffer.from(
           `${this.formData.email}:${this.formData.password}`,
@@ -71,7 +75,11 @@ export default {
         this.login(string)
       } catch (error) {
         console.log(error)
-        this.alert(error.message, 'warning')
+      } finally {
+        this.formData = {
+          email: '',
+          password: '',
+        }
       }
     },
   },

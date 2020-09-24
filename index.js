@@ -135,7 +135,9 @@ app.post('/auth', async (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error)
+    if (error) {
+      res.status(401).send(error.message)
+    }
   }
 })
 
