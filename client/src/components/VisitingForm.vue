@@ -1,18 +1,5 @@
 <template>
   <div class="visit-form">
-    <div>
-      <div class="alert-block">
-        <b-alert
-          show
-          v-for="alert in alerts"
-          variant="danger"
-          :class="alerts.length ? 'fadeIn fadeOut' : ''"
-          :key="alert.id"
-        >
-          {{ alert.alert }}
-        </b-alert>
-      </div>
-    </div>
     <div class="m-5 pb-5">
       <b-form @submit.prevent="onSubmit">
         <b-form-group
@@ -85,6 +72,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { uuid } from 'vue-uuid'
+
 export default {
   name: 'VisitingForm',
   data() {
@@ -103,31 +91,44 @@ export default {
     }
   },
   computed: {
-    ...mapState(['people', 'alerts']),
+    ...mapState(['people']),
   },
   methods: {
     ...mapActions(['getPeople', 'addVisitor', 'alert']),
+
     async onSubmit() {
       if (
         this.visitor.first_name.length < 3 ||
         this.visitor.last_name.length < 3
       ) {
-        const errorMsg = 'Your name should be more than 3 characters.'
-        this.alert(errorMsg, 'danger')
+        const err = {
+          alert: 'Your name should be more than 3 characters.',
+          alertType: 'danger',
+        }
+
+        this.alert(err)
         return
       }
 
       try {
+        const now = Date.now()
+
         const personObj = this.people.find(
           (person) => person.id === this.visitor.current_appointment.person
         )
-        var now = Date.now()
+
         this.visitor.current_appointment.person = personObj
+
         this.addVisitor(this.visitor)
+
         this.$router.push({ name: 'Visitors' })
       } catch (error) {
-        console.log(error)
-        this.alert(error, 'danger')
+        const err = {
+          alert: error,
+          alertType: 'danger',
+        }
+
+        this.alert(err)
       } finally {
         this.visitor = {
           id: uuid.v4(),
