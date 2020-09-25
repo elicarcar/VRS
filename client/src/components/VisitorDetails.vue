@@ -59,35 +59,35 @@
 </template>
 
 <script>
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz'
-import { mapActions, mapState } from 'vuex'
-import Spinner from './Spinner'
+import { zonedTimeToUtc, utcToZonedTime, format } from "date-fns-tz";
+import { mapActions, mapState } from "vuex";
+import Spinner from "./Spinner";
 
 export default {
-  name: 'VisitorDetails',
+  name: "VisitorDetails",
   components: {
-    Spinner,
+    Spinner
   },
   props: {
     visitor: Object,
-    visits: Array,
+    visits: Array
   },
 
   filters: {
     date: function(date) {
-      const timeZone = 'Europe/Amsterdam'
-      const zonedDate = utcToZonedTime(date, timeZone)
+      const timeZone = "Europe/Amsterdam";
+      const zonedDate = utcToZonedTime(date, timeZone);
 
-      const datePattern = 'd-M-yyyy'
-      const timePattern = 'HH:mm'
+      const datePattern = "d-M-yyyy";
+      const timePattern = "HH:mm";
       const justDate = format(zonedDate, datePattern, {
-        timeZone: 'Europe/Amsterdam',
-      })
+        timeZone: "Europe/Amsterdam"
+      });
       const time = format(zonedDate, timePattern, {
-        timeZone: 'Europe/Amsterdam',
-      })
-      return `${justDate} - ${time}`
-    },
-  },
-}
+        timeZone: "Europe/Amsterdam"
+      });
+      return `${justDate} - ${time}`;
+    }
+  }
+};
 </script>

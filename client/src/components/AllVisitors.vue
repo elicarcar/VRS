@@ -27,7 +27,7 @@
           </td>
           <td>
             <router-link :to="`/visitor/${visitor.id}`"
-              >{{ visitor.first_name + ' ' + visitor.last_name }}
+              >{{ visitor.first_name + " " + visitor.last_name }}
             </router-link>
           </td>
           <td>{{ visitor.email }}</td>
@@ -44,14 +44,14 @@
 </template>
 
 <script>
-import Spinner from '../components/Spinner'
+import Spinner from "../components/Spinner";
 export default {
-  name: 'AllVisitors',
+  name: "AllVisitors",
   components: {
-    Spinner,
+    Spinner
   },
   props: {
-    visitors: Object,
-  },
-}
+    visitors: Object
+  }
+};
 </script>

@@ -2,7 +2,7 @@
   <div class="page">
     <div class="d-flex justify-content-center align-items-center">
       <b-form-checkbox switch v-model="showOnline"></b-form-checkbox>
-      <h1>{{ showOnline ? 'Online Visitors' : 'Visitors' }}</h1>
+      <h1>{{ showOnline ? "Online Visitors" : "Visitors" }}</h1>
     </div>
 
     <AllVisitors v-if="!showOnline" :visitors="visitors" />
@@ -16,51 +16,51 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
-import AllVisitors from '../components/AllVisitors'
-import CurrentVisitors from '../components/CurrentVisitors'
+import { mapState, mapActions, mapGetters } from "vuex";
+import AllVisitors from "../components/AllVisitors";
+import CurrentVisitors from "../components/CurrentVisitors";
 
 export default {
-  name: 'Visitors',
+  name: "Visitors",
 
   data() {
     return {
       showOnline: false,
-      currentlyActive: null,
-    }
+      currentlyActive: null
+    };
   },
 
   components: {
     AllVisitors,
-    CurrentVisitors,
+    CurrentVisitors
   },
 
   computed: {
-    ...mapState(['visitors']),
-    ...mapGetters(['activeVisitors']),
+    ...mapState(["visitors"]),
+    ...mapGetters(["activeVisitors"])
   },
 
   watch: {
     activeVisitors: function reload() {
-      this.$store.dispatch('getAllVisitors')
-    },
+      this.$store.dispatch("getAllVisitors");
+    }
   },
 
   methods: {
-    ...mapActions(['getAllVisitors', 'updateVisitor']),
+    ...mapActions(["getAllVisitors", "updateVisitor"]),
 
     changeStatus: async function(visitor) {
       try {
-        console.log(visitor)
-        this.updateVisitor(visitor)
+        console.log(visitor);
+        this.updateVisitor(visitor);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    },
+    }
   },
 
   mounted() {
-    this.$store.dispatch('getAllVisitors')
-  },
-}
+    this.$store.dispatch("getAllVisitors");
+  }
+};
 </script>

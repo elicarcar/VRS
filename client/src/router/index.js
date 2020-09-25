@@ -1,68 +1,68 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import { isLoggedIn } from '../utils/auth.js'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import { isLoggedIn } from "../utils/auth.js";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "/",
+    name: "Home",
     component: Home,
     meta: {
-      allowAnonymous: true,
-    },
+      allowAnonymous: true
+    }
   },
   {
-    path: '/visitors',
-    name: 'Visitors',
+    path: "/visitors",
+    name: "Visitors",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Visitors.vue'),
+      import(/* webpackChunkName: "about" */ "../views/Visitors.vue")
   },
   {
-    path: '/visitor/:id',
-    name: 'Visitor',
+    path: "/visitor/:id",
+    name: "Visitor",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Visitor.vue'),
+      import(/* webpackChunkName: "about" */ "../views/Visitor.vue")
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     meta: {
-      allowAnonymous: true,
+      allowAnonymous: true
     },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Login.vue'),
-  },
-]
+      import(/* webpackChunkName: "about" */ "../views/Login.vue")
+  }
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes,
-})
+  routes
+});
 
 router.beforeEach((to, from, next) => {
-  if (to.name == 'login' && isLoggedIn()) {
-    next({ path: '/' })
+  if (to.name == "login" && isLoggedIn()) {
+    next({ path: "/" });
   } else if (!to.meta.allowAnonymous && !isLoggedIn()) {
     next({
-      path: '/login',
-      query: { redirect: to.fullPath },
-    })
+      path: "/login",
+      query: { redirect: to.fullPath }
+    });
   } else {
-    next()
+    next();
   }
-})
+});
 
-export default router
+export default router;

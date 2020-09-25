@@ -3,38 +3,38 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
-import VisitorDetails from '@/components/VisitorDetails'
+import { mapActions, mapGetters, mapState } from "vuex";
+import VisitorDetails from "@/components/VisitorDetails";
 
 export default {
-  name: 'Visitor',
+  name: "Visitor",
   data() {
     return {
-      visitor: {},
-    }
+      visitor: {}
+    };
   },
 
   components: {
-    VisitorDetails,
+    VisitorDetails
   },
 
   computed: {
-    ...mapState(['visitors', 'visits']),
-    ...mapGetters(['visitorsVisits']),
+    ...mapState(["visitors", "visits"]),
+    ...mapGetters(["visitorsVisits"])
   },
 
   methods: {
-    ...mapActions(['getVisits']),
+    ...mapActions(["getVisits"])
   },
 
   mounted() {
-    this.$store.dispatch('getVisits')
+    this.$store.dispatch("getVisits");
 
     const visitant = this.visitors.data.find(
-      (v) => v.id === this.$route.params.id
-    )
+      v => v.id === this.$route.params.id
+    );
 
-    this.visitor = visitant
-  },
-}
+    this.visitor = visitant;
+  }
+};
 </script>

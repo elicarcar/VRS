@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import VisitingForm from '../components/VisitingForm'
-import Nav from '../components/Nav'
+import VisitingForm from "../components/VisitingForm";
+import Nav from "../components/Nav";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    VisitingForm,
-  },
-}
+    VisitingForm
+  }
+};
 </script>

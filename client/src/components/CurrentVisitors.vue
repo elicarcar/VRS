@@ -26,7 +26,7 @@
           <td>{{ visitor.email }}</td>
           <td>
             <button class="btn" @click="changeStatus(visitor.id)">
-              {{ visitor.is_logged ? 'End' : 'Start' }}
+              {{ visitor.is_logged ? "End" : "Start" }}
             </button>
           </td>
         </tr>
@@ -41,10 +41,10 @@
 
 <script>
 export default {
-  name: 'CurrentVisitors',
+  name: "CurrentVisitors",
   props: {
     visitors: Array,
-    changeStatus: Function,
-  },
-}
+    changeStatus: Function
+  }
+};
 </script>

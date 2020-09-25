@@ -52,28 +52,28 @@
 </style>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState } from "vuex";
 export default {
-  name: 'LoginButtons',
+  name: "LoginButtons",
   data() {
     return {
-      showModal: false,
-    }
+      showModal: false
+    };
   },
   computed: {
-    ...mapState(['auth']),
+    ...mapState(["auth"])
   },
 
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(["logout"]),
     Logout: async function() {
       try {
-        this.$store.dispatch('logout')
-        this.showModal = false
+        this.$store.dispatch("logout");
+        this.showModal = false;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>

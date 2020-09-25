@@ -43,45 +43,45 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   data() {
     return {
       formData: {
-        email: '',
-        password: '',
-      },
-    }
+        email: "",
+        password: ""
+      }
+    };
   },
 
   methods: {
-    ...mapActions(['alert', 'login']),
+    ...mapActions(["alert", "login"]),
     submit: async function() {
       if (this.formData.password.length <= 6) {
         const err = {
-          alert: 'Your password should be more than 6 characters.',
-          alertType: 'warning',
-        }
-        this.alert(err)
-        return
+          alert: "Your password should be more than 6 characters.",
+          alertType: "warning"
+        };
+        this.alert(err);
+        return;
       }
       try {
         const string = Buffer.from(
           `${this.formData.email}:${this.formData.password}`,
-          'utf8'
-        ).toString('base64')
+          "utf8"
+        ).toString("base64");
 
-        this.login(string)
+        this.login(string);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
         this.formData = {
-          email: '',
-          password: '',
-        }
+          email: "",
+          password: ""
+        };
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>

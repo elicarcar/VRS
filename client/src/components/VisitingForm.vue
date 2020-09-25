@@ -70,31 +70,31 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import { uuid } from 'vue-uuid'
+import { mapState, mapActions } from "vuex";
+import { uuid } from "vue-uuid";
 
 export default {
-  name: 'VisitingForm',
+  name: "VisitingForm",
   data() {
     return {
       visitor: {
         id: uuid.v4(),
-        email: '',
-        first_name: '',
-        last_name: '',
-        company_name: '',
+        email: "",
+        first_name: "",
+        last_name: "",
+        company_name: "",
         current_appointment: {
           id: uuid.v4(),
-          person: null,
-        },
-      },
-    }
+          person: null
+        }
+      }
+    };
   },
   computed: {
-    ...mapState(['people']),
+    ...mapState(["people"])
   },
   methods: {
-    ...mapActions(['getPeople', 'addVisitor', 'alert']),
+    ...mapActions(["getPeople", "addVisitor", "alert"]),
 
     async onSubmit() {
       if (
@@ -102,51 +102,50 @@ export default {
         this.visitor.last_name.length < 3
       ) {
         const err = {
-          alert: 'Your name should be more than 3 characters.',
-          alertType: 'danger',
-        }
+          alert: "Your name should be more than 3 characters.",
+          alertType: "danger"
+        };
 
-        this.alert(err)
-        return
+        this.alert(err);
+        return;
       }
 
       try {
-        const now = Date.now()
+        const now = Date.now();
 
         const personObj = this.people.find(
-          (person) => person.id === this.visitor.current_appointment.person
-        )
+          person => person.id === this.visitor.current_appointment.person
+        );
 
-        this.visitor.current_appointment.person = personObj
+        this.visitor.current_appointment.person = personObj;
 
-        this.addVisitor(this.visitor)
+        this.addVisitor(this.visitor);
 
-        this.$router.push({ name: 'Visitors' })
+        this.$router.push({ name: "Visitors" });
       } catch (error) {
         const err = {
           alert: error,
-          alertType: 'danger',
-        }
+          alertType: "danger"
+        };
 
-        this.alert(err)
+        this.alert(err);
       } finally {
         this.visitor = {
           id: uuid.v4(),
-          email: '',
-          first_name: '',
-          last_name: '',
-          company_name: '',
+          email: "",
+          first_name: "",
+          last_name: "",
+          company_name: "",
           current_appointment: {
             id: uuid.v4(),
-            person: null,
-          },
-        }
+            person: null
+          }
+        };
       }
-    },
+    }
   },
   mounted() {
-    this.$store.dispatch('getPeople')
-  },
-}
+    this.$store.dispatch("getPeople");
+  }
+};
 </script>
-x

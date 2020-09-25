@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import LoginButtons from './LoginButtons'
+import LoginButtons from "./LoginButtons";
 export default {
-  name: 'Nav',
+  name: "Nav",
   components: {
-    LoginButtons,
-  },
-}
+    LoginButtons
+  }
+};
 </script>
