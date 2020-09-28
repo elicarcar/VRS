@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --watch",
+    "test:coverage": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "flush-promises": "^1.0.2",
+    "sinon": "^9.0.3",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-uuid": "^2.0.2",

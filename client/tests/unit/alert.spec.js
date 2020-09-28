@@ -22,7 +22,7 @@ describe('Alert Component', () => {
     })
   })
 
-  it('dynamically changes classes whe alerts length is greater than 0', () => {
+  it('dynamically changes classes when alerts length is greater than 0', () => {
     const wrapper = shallowMount(Alert, { store, localVue })
     const alertBox = wrapper.find('[data-name="alert-box"]')
 
