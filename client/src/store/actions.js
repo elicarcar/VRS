@@ -84,15 +84,18 @@ export default {
       .catch((err) => console.log(err))
   },
 
-  addVisitor: async ({ commit }, visitor) => {
+  addVisitor: async ({ commit, dispatch }, visitor) => {
     console.log('add visitor')
     try {
       const res = await axios.post(`${base_URL}/visitor`, visitor)
+      console.log('res data', res)
       commit('ADD_VISITORS', res.data)
-
+      if (!res.data.length) {
+        dispatch('getAllVisitors')
+      }
       console.log('add visitors res', res)
     } catch (error) {
-      console.log(err)
+      console.log(error)
     }
   },
 
@@ -109,12 +112,12 @@ export default {
       })
   },
 
-  updateVisitor: async ({ commit }, id) => {
+  updateVisitor: async ({ commit, dispatch }, id) => {
     axios
       .post(`${base_URL}/visitor/visits/${id}`)
       .then((res) => {
         commit('UPDATE_CURRENT_VISITORS', res.data)
-        console.log(res)
+        dispatch('getAllVisitors')
       })
       .catch((err) => console.log(err))
   },

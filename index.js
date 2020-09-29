@@ -36,7 +36,7 @@ app.post('/visitor', async (req, res) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          return result.rows
+          res.json(result.rows)
         }
       )
     } else {
@@ -161,7 +161,7 @@ app.post('/visitor/visits/:v_id', auth, async (req, res) => {
 
     // query starting time and current_appointment
     const query = await pool.query(
-      'SELECT start_time, current_appointment  FROM visitors WHERE id = $1',
+      'SELECT start_time, current_appointment FROM visitors WHERE id = $1',
       [v_id]
     )
     const start_time = query.rows[0]['start_time']

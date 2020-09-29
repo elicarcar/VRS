@@ -41,9 +41,6 @@ export default {
       get() {
         return this.getActiveVisitors
       },
-      set(visitor) {
-        return this.getActiveVisitors.filter((c) => c.id != visitor)
-      },
     },
   },
 
