@@ -10,8 +10,8 @@
             <strong>Appointment with:</strong>
             {{ visitor.current_appointment.person.name }} <br />
 
-            <!-- <strong>Starting Time:</strong>
-            {{ visitor.current_appointment.start_time | date }} -->
+            <strong>Starting Time:</strong>
+            {{ visitor.current_appointment.start_time | date }}
           </p>
         </b-card>
       </b-collapse>
