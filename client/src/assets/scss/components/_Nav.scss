@@ -12,7 +12,16 @@
   }
 
   .visitors {
-    font-size: 21px;
+    font-size: 19px;
+    text-decoration: none;
+    padding-right: 20px;
+    transition: all 0.2s ease-in;
+    border-radius: 7px;
+    &:hover {
+      background-color: #42b983;
+      border-radius: 7px;
+      color: #fff;
+    }
   }
 }
 

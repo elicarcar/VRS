@@ -1,5 +1,5 @@
 export default {
-  activeVisitors: (state) => {
+  getActiveVisitors: (state) => {
     return state.visitors.data.filter((v) => v.is_logged)
   },
 

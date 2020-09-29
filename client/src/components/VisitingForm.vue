@@ -119,9 +119,9 @@ export default {
 
         this.visitor.current_appointment.person = personObj
 
-        this.addVisitor(this.visitor)
+        this.$store.dispatch('addVisitor', this.visitor)
 
-        this.$router.push({ name: 'Visitors' })
+        this.$router.push({ name: 'Home' })
       } catch (error) {
         const err = {
           alert: error,

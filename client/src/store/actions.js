@@ -85,13 +85,15 @@ export default {
   },
 
   addVisitor: async ({ commit }, visitor) => {
-    axios
-      .post(`${base_URL}/visitor`, visitor)
-      .then((res) => {
-        commit('ADD_VISITORS', res.data)
-        console.log(res)
-      })
-      .catch((err) => console.log(err))
+    console.log('add visitor')
+    try {
+      const res = await axios.post(`${base_URL}/visitor`, visitor)
+      commit('ADD_VISITORS', res.data)
+
+      console.log('add visitors res', res)
+    } catch (error) {
+      console.log(err)
+    }
   },
 
   getAllVisitors: async ({ commit }) => {

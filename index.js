@@ -40,14 +40,22 @@ app.post('/visitor', async (req, res) => {
         }
       )
     } else {
+      const start = new Date()
       pool.query(
-        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
-        [first_name, last_name, email, company_name, current_appointment],
+        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment, start_time) VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *',
+        [
+          first_name,
+          last_name,
+          email,
+          company_name,
+          current_appointment,
+          start,
+        ],
         (err, result) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          return result.rows[0]
+          res.json(result.rows[0])
         }
       )
     }
