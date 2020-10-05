@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import axios from "axios";
 import store from "../store";
 const AUTH_TOKEN_KEY = "token";
+=======
+import axios from 'axios'
+
+const AUTH_TOKEN_KEY = 'token'
+>>>>>>> develop
 
 export function setAuthToken(token) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

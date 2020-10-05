@@ -1,6 +1,6 @@
 export default {
-  activeVisitors: state => {
-    return state.visitors.data.filter(v => v.is_logged);
+  getActiveVisitors: (state) => {
+    return state.visitors.data.filter((v) => v.is_logged)
   },
 
   visitorsVisits: state => visitor => {

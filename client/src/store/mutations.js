@@ -49,7 +49,7 @@ export default {
   },
 
   UPDATE_CURRENT_VISITORS: (state) => {
-    state.visitors
+    state.visitors = state.visitors
   },
 
   GET_VISITS: (state, visits) => {

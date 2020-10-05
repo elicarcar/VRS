@@ -3,8 +3,9 @@ const app = express()
 const cors = require('cors')
 const pool = require('./db/db')
 const auth = require('./middleware/auth')
-const axios = require('axios')
 const jwt = require('jsonwebtoken')
+
+require('dotenv').config()
 
 app.use(cors())
 app.use(express.json())
@@ -36,18 +37,26 @@ app.post('/visitor', async (req, res) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          return result.rows
+          res.json(result.rows)
         }
       )
     } else {
+      const start = new Date()
       pool.query(
-        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment) VALUES($1, $2, $3, $4, $5 ) RETURNING *',
-        [first_name, last_name, email, company_name, current_appointment],
+        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment, start_time) VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *',
+        [
+          first_name,
+          last_name,
+          email,
+          company_name,
+          current_appointment,
+          start,
+        ],
         (err, result) => {
           if (err) {
             return console.error('Error executing query', err.stack)
           }
-          return result.rows[0]
+          res.json(result.rows[0])
         }
       )
     }
@@ -98,33 +107,16 @@ app.get('/user', auth, async (req, res) => {
 })
 
 app.post('/auth', async (req, res) => {
-  const { string } = req.body
-
-  if (!string) {
+  const { data } = req.body
+  if (!data) {
     return res.status(401).json({ msg: 'No token, authorization denied.' })
   }
 
   try {
-    const url = 'https://api.heroku.com/oauth/authorizations'
-    const headers = {
-      Accept: 'application/vnd.heroku+json; version=3',
-      Authorization: 'Basic ' + string,
-    }
-
-    const resp = await axios.post(url, {}, { headers })
-
-    const {
-      data: {
-        user: { id, email, full_name },
-        access_token: { token },
-      },
-    } = resp
+    const { id_token } = data
 
     const user = {
-      id,
-      full_name,
-      email,
-      access_token: token,
+      token: id_token,
     }
 
     jwt.sign({ user }, 'secretkey', { expiresIn: '10h' }, (err, token) => {
@@ -135,6 +127,7 @@ app.post('/auth', async (req, res) => {
       }
     })
   } catch (error) {
+    console.log(error)
     if (error) {
       res.status(401).send(error.message)
     }
@@ -153,7 +146,7 @@ app.post('/visitor/visits/:v_id', auth, async (req, res) => {
 
     // query starting time and current_appointment
     const query = await pool.query(
-      'SELECT start_time, current_appointment  FROM visitors WHERE id = $1',
+      'SELECT start_time, current_appointment FROM visitors WHERE id = $1',
       [v_id]
     )
     const start_time = query.rows[0]['start_time']

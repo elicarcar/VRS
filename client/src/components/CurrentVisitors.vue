@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="visitor-table" v-show="visitors.length">
+    <table class="visitor-table" v-show="visitors.length > 0">
       <thead>
         <tr>
           <th></th>
@@ -40,8 +40,10 @@
 </template>
 
 <script>
+import Spinner from './Spinner'
 export default {
-  name: "CurrentVisitors",
+  name: 'CurrentVisitors',
+  components: { Spinner },
   props: {
     visitors: Array,
     changeStatus: Function

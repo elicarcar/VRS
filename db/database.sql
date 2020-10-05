@@ -1,5 +1,6 @@
 CREATE DATABASE visitor_registration_system_01
 
+
 CREATE TABLE visitors (
     id BIGSERIAL NOT NULL PRIMARY KEY, 
     first_name VARCHAR(30) NOT NULL, 

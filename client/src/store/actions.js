@@ -1,10 +1,9 @@
-import axios from "axios";
-import uuid from "uuid";
-import { base_URL } from "../utils/url.js";
-import { setAuthToken, clearAuthToken } from "../utils/auth.js";
-import store from "../store";
-import router from "../router/index.js";
-import people from "../data/people.js";
+import axios from 'axios'
+import uuid from 'uuid'
+import { base_URL } from '../utils/url.js'
+import { setAuthToken, clearAuthToken } from '../utils/auth.js'
+import store from '../store'
+import router from '../router/index.js'
 
 export default {
   loadUser: async ({ commit }) => {
@@ -31,18 +30,17 @@ export default {
         }
       });
     } catch (err) {
-      commit("AUTH_ERROR");
-      clearAuthToken();
-      console.log(err);
+      commit('AUTH_ERROR')
+      clearAuthToken()
     }
   },
 
-  login: async ({ commit, dispatch }, string) => {
+  login: async ({ commit, dispatch }, data) => {
     try {
-      const data = {
-        string: string
-      };
-      const res = await axios.post(`${base_URL}/auth`, data);
+      const userInfo = {
+        data: data.wc,
+      }
+      const res = await axios.post(`${base_URL}/auth`, userInfo)
 
       commit("AUTH_SUCCESS");
       setAuthToken(res.data);
@@ -65,41 +63,59 @@ export default {
     }
   },
 
-  logout: async ({ commit }) => {
+  logout: async ({ commit, dispatch }) => {
     try {
       commit("LOGOUT");
       clearAuthToken();
       router.push("/login");
     } catch (error) {
-      console.error(error);
+      const alert = {
+        alert: error.message,
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
     }
   },
 
-  getPeople: async ({ commit }) => {
+  getPeople: async ({ commit, dispatch }) => {
     axios
       .get("https://my-json-server.typicode.com/elicarcar/mockAPI/people")
       .then(res => {
         commit("GET_PEOPLE", res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        const alert = {
+          alert: error.message,
+          alertType: 'danger',
+        }
+        dispatch('alert', alert)
+      })
   },
 
-  addVisitor: async ({ commit }, visitor) => {
-    axios
-      .post(`${base_URL}/visitor`, visitor)
-      .then(res => {
-        commit("ADD_VISITORS", res.data);
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+  addVisitor: async ({ commit, dispatch }, visitor) => {
+    try {
+      const res = await axios.post(`${base_URL}/visitor`, visitor)
+      commit('ADD_VISITORS', res.data)
+      if (!res.data.length) {
+        dispatch('getAllVisitors')
+      }
+    } catch (error) {
+      const alert = {
+        alert: 'An error occurred while fetching visitors.',
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
+    }
   },
 
   getAllVisitors: async ({ commit }) => {
     axios
       .get(`${base_URL}/visitors`)
-      .then(res => {
-        commit("GET_VISITORS", res.data);
-        console.log(res.data);
+      .then((res) => {
+        commit('GET_VISITORS', res.data)
+      })
+      .catch((error) => {
+        commit('ERROR_VISITORS', error.message)
       })
       .catch(error => {
         commit("ERROR_VISITORS", error.message);
@@ -107,22 +123,32 @@ export default {
       });
   },
 
-  updateVisitor: async ({ commit }, id) => {
+  updateVisitor: async ({ commit, dispatch }, id) => {
     axios
       .post(`${base_URL}/visitor/visits/${id}`)
-      .then(res => {
-        commit("UPDATE_CURRENT_VISITORS", res.data);
-        console.log(res);
+      .then((res) => {
+        commit('UPDATE_CURRENT_VISITORS', res.data)
+        dispatch('getAllVisitors')
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        const alert = {
+          alert: err.message,
+          alertType: 'danger',
+        }
+        dispatch('alert', alert)
+      })
   },
 
-  getVisits: async ({ commit }) => {
+  getVisits: async ({ commit, dispatch }) => {
     try {
       const res = await axios.get(`${base_URL}/visits`);
       commit("GET_VISITS", res.data);
     } catch (error) {
-      console.log(error);
+      const alert = {
+        alert: 'An error occurred while fetching visitors.',
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
     }
   },
 

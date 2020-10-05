@@ -1,7 +1,8 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-import { isLoggedIn } from "../utils/auth.js";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
+import { isLoggedIn } from '../utils/auth.js'
+import { authGuard } from '../auth/authGuard'
 
 Vue.use(VueRouter);
 
@@ -10,9 +11,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: {
-      allowAnonymous: true
-    }
   },
   {
     path: "/visitors",
@@ -24,8 +22,17 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/Visitors.vue")
   },
   {
-    path: "/visitor/:id",
-    name: "Visitor",
+    path: '/new-visitor',
+    name: 'NewVisitor',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/NewVisitor.vue'),
+  },
+  {
+    path: '/visitor/:id',
+    name: 'Visitor',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

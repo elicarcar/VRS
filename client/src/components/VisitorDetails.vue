@@ -11,7 +11,7 @@
             {{ visitor.current_appointment.person.name }} <br />
 
             <strong>Starting Time:</strong>
-            {{ visitor.current_appointment.start_time | date }}
+            {{ visitor.current_appointment.start_time }}
           </p>
         </b-card>
       </b-collapse>
@@ -78,8 +78,8 @@ export default {
       const timeZone = 'Europe/Amsterdam'
       const zonedDate = utcToZonedTime(date, timeZone)
 
-      const datePattern = 'd-M-yyyy'
-      const timePattern = 'HH:mm'
+      const datePattern = 'd/M/yyyy'
+      const timePattern = 'HH:mm a'
       const justDate = format(zonedDate, datePattern, {
         timeZone: 'Europe/Amsterdam',
       })
