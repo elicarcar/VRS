@@ -3,7 +3,6 @@
     <div class="d-flex justify-content-center align-items-center">
       <h1>Visitors</h1>
     </div>
-
     <AllVisitors :visitors="visitors" />
   </div>
 </template>
@@ -15,12 +14,6 @@ import CurrentVisitors from '../components/CurrentVisitors'
 
 export default {
   name: 'Home',
-
-  data() {
-    return {
-      currentlyActive: null,
-    }
-  },
 
   components: {
     AllVisitors,

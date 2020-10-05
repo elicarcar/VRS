@@ -4,7 +4,6 @@ import { base_URL } from '../utils/url.js'
 import { setAuthToken, clearAuthToken } from '../utils/auth.js'
 import store from '../store'
 import router from '../router/index.js'
-import people from '../data/people.js'
 
 export default {
   loadUser: async ({ commit }) => {
@@ -33,16 +32,15 @@ export default {
     } catch (err) {
       commit('AUTH_ERROR')
       clearAuthToken()
-      console.log(err)
     }
   },
 
-  login: async ({ commit, dispatch }, string) => {
+  login: async ({ commit, dispatch }, data) => {
     try {
-      const data = {
-        string: string,
+      const userInfo = {
+        data: data.wc,
       }
-      const res = await axios.post(`${base_URL}/auth`, data)
+      const res = await axios.post(`${base_URL}/auth`, userInfo)
 
       commit('AUTH_SUCCESS')
       setAuthToken(res.data)
@@ -65,37 +63,48 @@ export default {
     }
   },
 
-  logout: async ({ commit }) => {
+  logout: async ({ commit, dispatch }) => {
     try {
       commit('LOGOUT')
       clearAuthToken()
       router.push('/login')
     } catch (error) {
-      console.error(error)
+      const alert = {
+        alert: error.message,
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
     }
   },
 
-  getPeople: async ({ commit }) => {
+  getPeople: async ({ commit, dispatch }) => {
     axios
       .get('https://my-json-server.typicode.com/elicarcar/mockAPI/people')
       .then((res) => {
         commit('GET_PEOPLE', res.data)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        const alert = {
+          alert: error.message,
+          alertType: 'danger',
+        }
+        dispatch('alert', alert)
+      })
   },
 
   addVisitor: async ({ commit, dispatch }, visitor) => {
-    console.log('add visitor')
     try {
       const res = await axios.post(`${base_URL}/visitor`, visitor)
-      console.log('res data', res)
       commit('ADD_VISITORS', res.data)
       if (!res.data.length) {
         dispatch('getAllVisitors')
       }
-      console.log('add visitors res', res)
     } catch (error) {
-      console.log(error)
+      const alert = {
+        alert: 'An error occurred while fetching visitors.',
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
     }
   },
 
@@ -104,11 +113,9 @@ export default {
       .get(`${base_URL}/visitors`)
       .then((res) => {
         commit('GET_VISITORS', res.data)
-        console.log(res.data)
       })
       .catch((error) => {
         commit('ERROR_VISITORS', error.message)
-        console.log(error)
       })
   },
 
@@ -119,15 +126,25 @@ export default {
         commit('UPDATE_CURRENT_VISITORS', res.data)
         dispatch('getAllVisitors')
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        const alert = {
+          alert: err.message,
+          alertType: 'danger',
+        }
+        dispatch('alert', alert)
+      })
   },
 
-  getVisits: async ({ commit }) => {
+  getVisits: async ({ commit, dispatch }) => {
     try {
       const res = await axios.get(`${base_URL}/visits`)
       commit('GET_VISITS', res.data)
     } catch (error) {
-      console.log(error)
+      const alert = {
+        alert: 'An error occurred while fetching visitors.',
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
     }
   },
 

@@ -47,7 +47,6 @@ export default {
   methods: {
     changeStatus: async function(visitor) {
       try {
-        console.log(visitor)
         this.$store.dispatch('updateVisitor', visitor)
       } catch (error) {
         console.log(error)
@@ -57,10 +56,6 @@ export default {
 
   created() {
     this.$store.dispatch('getAllVisitors')
-  },
-
-  mounted() {
-    console.log('store visitors', this.visitors)
   },
 }
 </script>

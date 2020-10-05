@@ -65,13 +65,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'alert']),
     Logout: async function() {
       try {
-        this.$store.dispatch('logout')
-        this.showModal = false
+        this.$gAuth.signOut().then(() => {
+          this.$store.dispatch('logout')
+          this.showModal = false
+        })
       } catch (error) {
-        console.log(error)
+        const alert = {
+          alert: error.message,
+          alertType: 'danger',
+        }
+        this.alert(alert)
       }
     },
   },

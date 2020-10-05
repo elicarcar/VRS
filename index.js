@@ -3,8 +3,9 @@ const app = express()
 const cors = require('cors')
 const pool = require('./db/db')
 const auth = require('./middleware/auth')
-const axios = require('axios')
 const jwt = require('jsonwebtoken')
+
+require('dotenv').config()
 
 app.use(cors())
 app.use(express.json())
@@ -106,33 +107,16 @@ app.get('/user', auth, async (req, res) => {
 })
 
 app.post('/auth', async (req, res) => {
-  const { string } = req.body
-
-  if (!string) {
+  const { data } = req.body
+  if (!data) {
     return res.status(401).json({ msg: 'No token, authorization denied.' })
   }
 
   try {
-    const url = 'https://api.heroku.com/oauth/authorizations'
-    const headers = {
-      Accept: 'application/vnd.heroku+json; version=3',
-      Authorization: 'Basic ' + string,
-    }
-
-    const resp = await axios.post(url, {}, { headers })
-
-    const {
-      data: {
-        user: { id, email, full_name },
-        access_token: { token },
-      },
-    } = resp
+    const { id_token } = data
 
     const user = {
-      id,
-      full_name,
-      email,
-      access_token: token,
+      token: id_token,
     }
 
     jwt.sign({ user }, 'secretkey', { expiresIn: '10h' }, (err, token) => {
@@ -143,6 +127,7 @@ app.post('/auth', async (req, res) => {
       }
     })
   } catch (error) {
+    console.log(error)
     if (error) {
       res.status(401).send(error.message)
     }

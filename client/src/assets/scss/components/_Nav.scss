@@ -1,6 +1,7 @@
 .nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   svg {
     font-size: 25px;
   }
@@ -12,7 +13,6 @@
   }
 
   .visitors {
-    font-size: 19px;
     text-decoration: none;
     padding-right: 20px;
     transition: all 0.2s ease-in;

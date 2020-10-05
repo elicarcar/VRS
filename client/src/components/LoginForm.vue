@@ -4,39 +4,11 @@
       <h2>Please login to your account</h2>
 
       <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input
-            v-model="formData.email"
-            type="email"
-            class="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
-          />
-          <small id="emailHelp" class="form-text text-muted"
-            >We'll never share your email with anyone else.</small
-          >
+        <div class="form-group d-flex justify-content-center">
+          <button class="  btn btn-primary g-signin2" @click.prevent="submit">
+            LOGIN
+          </button>
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input
-            v-model="formData.password"
-            type="password"
-            class="form-control"
-            id="exampleInputPassword1"
-            placeholder="Password"
-          />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-          <label class="form-check-label" for="exampleCheck1"
-            >Check me out</label
-          >
-        </div>
-        <button type="submit" class="btn btn-primary" @click.prevent="submit">
-          Login
-        </button>
       </form>
     </div>
   </div>
@@ -46,41 +18,23 @@
 import { mapActions } from 'vuex'
 export default {
   name: 'LoginForm',
-  data() {
-    return {
-      formData: {
-        email: '',
-        password: '',
-      },
-    }
-  },
 
   methods: {
     ...mapActions(['alert', 'login']),
-    submit: async function() {
-      if (this.formData.password.length <= 6) {
-        const err = {
-          alert: 'Your password should be more than 6 characters.',
-          alertType: 'warning',
-        }
-        this.alert(err)
-        return
-      }
-      try {
-        const string = Buffer.from(
-          `${this.formData.email}:${this.formData.password}`,
-          'utf8'
-        ).toString('base64')
-
-        this.login(string)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        this.formData = {
-          email: '',
-          password: '',
-        }
-      }
+    submit() {
+      this.$gAuth
+        .signIn()
+        .then((user) => {
+          this.login(user)
+          this.isSignIn = this.$gAuth.isAuthorized
+        })
+        .catch((error) => {
+          const alert = {
+            alert: error.message,
+            alertType: 'danger',
+          }
+          this.alert(alert)
+        })
     },
   },
 }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import { isLoggedIn } from '../utils/auth.js'
+import { authGuard } from '../auth/authGuard'
 
 Vue.use(VueRouter)
 
