@@ -1,8 +1,8 @@
-import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import sinon from 'sinon'
 import Vuex from 'vuex'
 import LoginForm from '@/components/LoginForm.vue'
-import sinon from 'sinon'
 
 const localVue = createLocalVue()
 
@@ -24,33 +24,13 @@ describe('LoginForm', () => {
     })
   })
 
-  it('sets new value to email and password input', async () => {
+  it('calls submit fn on button click', async () => {
     const wrapper = shallowMount(LoginForm, { store, localVue })
-    const emailInput = wrapper.find('input[type="email"]')
-    const passwordInput = wrapper.find('input[type="password"]')
-
-    await emailInput.setValue('foo@gmail.com')
-    await passwordInput.setValue('fooBarBaz')
-
-    expect(emailInput.element.value).toBe('foo@gmail.com')
-    expect(passwordInput.element.value).toBe('fooBarBaz')
-  })
-
-  it('calls alert action when password length is lesser than 6 ', async () => {
-    const wrapper = shallowMount(LoginForm, { store, localVue })
-    const emailInput = wrapper.find('input[type="email"]')
-    const passwordInput = wrapper.find('input[type="password"]')
 
     const submitStub = sinon.stub()
     wrapper.setMethods({ submit: submitStub })
 
-    await emailInput.setValue('foo@gmail.com')
-    await passwordInput.setValue('fooBa')
-
     wrapper.find('button').trigger('click')
     expect(submitStub.called).toBe(true)
-    if (passwordInput.element.value.length <= 6) {
-      expect(actions.alert).toHaveBeenCalled()
-    }
   })
 })

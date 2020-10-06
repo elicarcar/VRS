@@ -5,7 +5,7 @@
 
       <form>
         <div class="form-group d-flex justify-content-center">
-          <button class="  btn btn-primary g-signin2" @click.prevent="submit">
+          <button class="btn btn-primary g-signin2" @click.prevent="submit">
             LOGIN
           </button>
         </div>

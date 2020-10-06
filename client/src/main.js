@@ -1,20 +1,15 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
 
-import UUID from "vue-uuid";
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+import UUID from 'vue-uuid'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-import "./assets/scss/index.scss";
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/scss/index.scss'
 
-<<<<<<< HEAD
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
-Vue.use(UUID);
-=======
 import GAuth from 'vue-google-oauth2'
 const gauthOption = {
   clientId:
@@ -26,12 +21,11 @@ Vue.use(GAuth, gauthOption)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(UUID)
->>>>>>> develop
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount("#app");
+  render: (h) => h(App),
+}).$mount('#app')

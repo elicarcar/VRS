@@ -59,15 +59,10 @@
 </template>
 
 <script>
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz'
-import { mapActions, mapState } from 'vuex'
-import Spinner from './Spinner'
-
+import { utcToZonedTime, format } from 'date-fns-tz'
 export default {
   name: 'VisitorDetails',
-  components: {
-    Spinner,
-  },
+
   props: {
     visitor: Object,
     visits: Array,

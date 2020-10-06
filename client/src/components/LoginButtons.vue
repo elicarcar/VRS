@@ -1,12 +1,21 @@
 <template>
   <div class="btn-group">
     <b-button-group>
-      <b-button v-if="!auth.user.isAuthenticated" variant="outline-default">
+      <b-button
+        data-name="login-btn"
+        v-if="!auth.user.isAuthenticated"
+        variant="outline-default"
+      >
         <router-link to="/login">
           <b-icon icon="person-fill"></b-icon> Login
         </router-link>
       </b-button>
-      <b-button v-else variant="outline-default" @click="showModal = true">
+      <b-button
+        data-name="logout-btn"
+        v-else
+        variant="outline-default"
+        @click="showModal = true"
+      >
         <b-icon icon="door-open-fill"></b-icon> Logout
       </b-button>
     </b-button-group>
@@ -19,7 +28,11 @@
               <b-button variant="secondary" @click="showModal = false">
                 Cancel
               </b-button>
-              <b-button variant="danger" @click="Logout()">
+              <b-button
+                data-name="logout-fn-btn"
+                variant="danger"
+                @click="Logout()"
+              >
                 Logout
               </b-button>
             </div>
@@ -52,28 +65,19 @@
 </style>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from 'vuex'
 export default {
-  name: "LoginButtons",
+  name: 'LoginButtons',
   data() {
     return {
-      showModal: false
-    };
+      showModal: false,
+    }
   },
   computed: {
-    ...mapState(["auth"])
+    ...mapState(['auth']),
   },
 
   methods: {
-<<<<<<< HEAD
-    ...mapActions(["logout"]),
-    Logout: async function() {
-      try {
-        this.$store.dispatch("logout");
-        this.showModal = false;
-      } catch (error) {
-        console.log(error);
-=======
     ...mapActions(['logout', 'alert']),
     Logout: async function() {
       try {
@@ -87,9 +91,8 @@ export default {
           alertType: 'danger',
         }
         this.alert(alert)
->>>>>>> develop
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>

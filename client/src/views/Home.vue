@@ -16,46 +16,46 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
-import CurrentVisitors from '../components/CurrentVisitors'
-import Spinner from '../components/Spinner'
+import { mapState, mapActions, mapGetters } from "vuex";
+import CurrentVisitors from "../components/CurrentVisitors";
+import Spinner from "../components/Spinner";
 
 export default {
-  name: 'Home',
+  name: "Home",
 
   data() {
     return {
-      currentlyActive: null,
-    }
+      currentlyActive: null
+    };
   },
 
   components: {
     CurrentVisitors,
-    Spinner,
+    Spinner
   },
 
   computed: {
-    ...mapState(['visitors']),
-    ...mapGetters(['getActiveVisitors']),
+    ...mapState(["visitors"]),
+    ...mapGetters(["getActiveVisitors"]),
     activeVisitors: {
       get() {
-        return this.getActiveVisitors
-      },
-    },
+        return this.getActiveVisitors;
+      }
+    }
   },
 
   methods: {
     changeStatus: async function(visitor) {
       try {
-        this.$store.dispatch('updateVisitor', visitor)
+        this.$store.dispatch("updateVisitor", visitor);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    },
+    }
   },
 
   created() {
-    this.$store.dispatch('getAllVisitors')
-  },
-}
+    this.$store.dispatch("getAllVisitors");
+  }
+};
 </script>

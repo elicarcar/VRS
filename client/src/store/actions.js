@@ -2,33 +2,32 @@ import axios from 'axios'
 import uuid from 'uuid'
 import { base_URL } from '../utils/url.js'
 import { setAuthToken, clearAuthToken } from '../utils/auth.js'
-import store from '../store'
 import router from '../router/index.js'
 
 export default {
   loadUser: async ({ commit }) => {
     if (localStorage.token) {
-      setAuthToken(localStorage.token);
+      setAuthToken(localStorage.token)
     } else {
-      return;
+      return
     }
 
     try {
-      const res = await axios.get(`${base_URL}/user`);
+      const res = await axios.get(`${base_URL}/user`)
 
-      commit("LOAD_USER", res.data);
-      router.push("/").catch(err => {
+      commit('LOAD_USER', res.data)
+      router.push('/').catch((err) => {
         // Ignore the vuex err regarding  navigating to the page they are already on.
         if (
-          err.name !== "NavigationDuplicated" &&
+          err.name !== 'NavigationDuplicated' &&
           !err.message.includes(
-            "Avoided redundant navigation to current location"
+            'Avoided redundant navigation to current location'
           )
         ) {
           // But print any other errors to the console
-          logError(err);
+          console.log(err)
         }
-      });
+      })
     } catch (err) {
       commit('AUTH_ERROR')
       clearAuthToken()
@@ -42,32 +41,32 @@ export default {
       }
       const res = await axios.post(`${base_URL}/auth`, userInfo)
 
-      commit("AUTH_SUCCESS");
-      setAuthToken(res.data);
-      dispatch("loadUser");
+      commit('AUTH_SUCCESS')
+      setAuthToken(res.data)
+      dispatch('loadUser')
 
       const alert = {
-        alert: "You have successfully logged in",
-        alertType: "primary"
-      };
+        alert: 'You have successfully logged in',
+        alertType: 'primary',
+      }
 
-      dispatch("alert", alert);
+      dispatch('alert', alert)
     } catch (err) {
-      commit("AUTH_ERROR");
-      clearAuthToken();
+      commit('AUTH_ERROR')
+      clearAuthToken()
       const errorAlert = {
         alert: err.message,
-        alertType: "danger"
-      };
-      dispatch("alert", errorAlert);
+        alertType: 'danger',
+      }
+      dispatch('alert', errorAlert)
     }
   },
 
   logout: async ({ commit, dispatch }) => {
     try {
-      commit("LOGOUT");
-      clearAuthToken();
-      router.push("/login");
+      commit('LOGOUT')
+      clearAuthToken()
+      router.push('/login')
     } catch (error) {
       const alert = {
         alert: error.message,
@@ -79,13 +78,13 @@ export default {
 
   getPeople: async ({ commit, dispatch }) => {
     axios
-      .get("https://my-json-server.typicode.com/elicarcar/mockAPI/people")
-      .then(res => {
-        commit("GET_PEOPLE", res.data);
+      .get('https://my-json-server.typicode.com/elicarcar/mockAPI/people')
+      .then((res) => {
+        commit('GET_PEOPLE', res.data)
       })
       .catch((err) => {
         const alert = {
-          alert: error.message,
+          alert: err.message,
           alertType: 'danger',
         }
         dispatch('alert', alert)
@@ -117,10 +116,10 @@ export default {
       .catch((error) => {
         commit('ERROR_VISITORS', error.message)
       })
-      .catch(error => {
-        commit("ERROR_VISITORS", error.message);
-        console.log(error);
-      });
+      .catch((error) => {
+        commit('ERROR_VISITORS', error.message)
+        console.log(error)
+      })
   },
 
   updateVisitor: async ({ commit, dispatch }, id) => {
@@ -141,8 +140,8 @@ export default {
 
   getVisits: async ({ commit, dispatch }) => {
     try {
-      const res = await axios.get(`${base_URL}/visits`);
-      commit("GET_VISITS", res.data);
+      const res = await axios.get(`${base_URL}/visits`)
+      commit('GET_VISITS', res.data)
     } catch (error) {
       const alert = {
         alert: 'An error occurred while fetching visitors.',
@@ -153,16 +152,16 @@ export default {
   },
 
   alert: ({ commit }, alertPayload, timeout = 3000) => {
-    const id = uuid.v4();
-    const { alert, alertType } = alertPayload;
+    const id = uuid.v4()
+    const { alert, alertType } = alertPayload
     const payload = {
       id,
       alert,
-      alertType
-    };
+      alertType,
+    }
 
-    commit("ADD_ALERT", payload);
+    commit('ADD_ALERT', payload)
 
-    setTimeout(() => commit("REMOVE_ALERT", payload.id), timeout);
-  }
-};
+    setTimeout(() => commit('REMOVE_ALERT', payload.id), timeout)
+  },
+}

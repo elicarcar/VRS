@@ -1,33 +1,33 @@
-import { createLocalVue, mount } from '@vue/test-utils'
-import Vuex from 'vuex'
-import { BootstrapVue } from 'bootstrap-vue'
+import { createLocalVue, mount } from "@vue/test-utils";
+import Vuex from "vuex";
+import { BootstrapVue } from "bootstrap-vue";
 
-import AllVisitors from '@/components/AllVisitors.vue'
-import Spinner from '@/components/Spinner.vue'
+import AllVisitors from "@/components/AllVisitors.vue";
+import Spinner from "@/components/Spinner.vue";
 
-const localVue = createLocalVue()
+const localVue = createLocalVue();
 
-localVue.use(BootstrapVue)
-localVue.use(Vuex)
+localVue.use(BootstrapVue);
+localVue.use(Vuex);
 
-describe('AllVisitors.vue', () => {
-  it('shows spinner components if visitors are loading', () => {
+describe("AllVisitors.vue", () => {
+  it("shows spinner components if visitors are loading", () => {
     const wrapper = mount(AllVisitors, {
       propsData: {
         visitors: {
           data: [],
-          isLoading: false,
-        },
+          isLoading: false
+        }
       },
-      localVue,
-    })
+      localVue
+    });
 
-    const spinner = wrapper.findComponent(Spinner)
+    const spinner = wrapper.findComponent(Spinner);
 
     if (wrapper.props().visitors.isLoading) {
-      expect(spinner.exists()).toBe(false)
+      expect(spinner.exists()).toBe(false);
     } else {
-      expect(spinner.exists()).toBe(false)
+      expect(spinner.exists()).toBe(false);
     }
-  })
-})
+  });
+});

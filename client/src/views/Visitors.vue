@@ -8,9 +8,8 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-import AllVisitors from "../components/AllVisitors";
-import CurrentVisitors from "../components/CurrentVisitors";
+import { mapState, mapActions } from 'vuex'
+import AllVisitors from '../components/AllVisitors'
 
 export default {
   name: 'Home',
@@ -28,7 +27,7 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch("getAllVisitors");
-  }
-};
+    this.$store.dispatch('getAllVisitors')
+  },
+}
 </script>
