@@ -7,21 +7,30 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('CurrentVisitors', () => {
-  it('shows visitors if visitors.length > 0', () => {
+  it('renders correctly', () => {
     const wrapper = mount(CurrentVisitors, {
       propsData: {
         visitors: [],
         changeStatus: jest.fn(),
       },
     })
-
-    const paragraph = wrapper.find('p')
-    if (!wrapper.vm.visitors.length) {
-      expect(paragraph.text()).toBe(
-        'There are no visitors at the office right now.'
-      )
-    }
+    expect(wrapper.html()).toMatchSnapshot()
   }),
+    it('shows visitors if visitors.length > 0', () => {
+      const wrapper = mount(CurrentVisitors, {
+        propsData: {
+          visitors: [],
+          changeStatus: jest.fn(),
+        },
+      })
+
+      const paragraph = wrapper.find('p')
+      if (!wrapper.vm.visitors.length) {
+        expect(paragraph.text()).toBe(
+          'There are no visitors at the office right now.'
+        )
+      }
+    }),
     it("won't show the table if !visitors.length", () => {
       const wrapper = mount(CurrentVisitors, {
         propsData: {

@@ -25,13 +25,17 @@
           <div class="modal-box">
             <h3>Are you sure you want to logout?</h3>
             <div class="buttons">
-              <b-button variant="secondary" @click="showModal = false">
+              <b-button
+                data-name="logout-cancel-btn"
+                variant="secondary"
+                @click="showModal = false"
+              >
                 Cancel
               </b-button>
               <b-button
                 data-name="logout-fn-btn"
                 variant="danger"
-                @click="Logout()"
+                @click="logoutFn()"
               >
                 Logout
               </b-button>
@@ -79,7 +83,7 @@ export default {
 
   methods: {
     ...mapActions(['logout', 'alert']),
-    Logout: async function() {
+    async logoutFn() {
       try {
         this.$gAuth.signOut().then(() => {
           this.$store.dispatch('logout')

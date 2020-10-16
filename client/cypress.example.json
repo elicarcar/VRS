@@ -1,0 +1,9 @@
+{
+  "chromeWebSecurity": false,
+  "env": {
+    "googleSocialLoginUsername": "<gmail for testing>",
+    "googleSocialLoginPassword": "<gmail password>",
+    "loginUrl": "<The URL for the login page that includes the social network buttons>",
+    "token": "<a valid gmail token manual auth>"
+  }
+}

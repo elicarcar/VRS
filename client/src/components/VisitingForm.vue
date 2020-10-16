@@ -23,7 +23,7 @@
           label-for="input-2"
         >
           <b-form-input
-            id="input-2"
+            id="first"
             v-model="visitor.first_name"
             required
             placeholder="Enter first name"
@@ -32,7 +32,7 @@
 
         <b-form-group id="input-group-2" label="Last Name:" label-for="input-2">
           <b-form-input
-            id="input-2"
+            id="last"
             v-model="visitor.last_name"
             required
             placeholder="Enter last name"
@@ -41,7 +41,7 @@
 
         <b-form-group id="input-group-2" label="Company:" label-for="input-2">
           <b-form-input
-            id="input-2"
+            id="company"
             v-model="visitor.company_name"
             required
             placeholder="Enter company name"

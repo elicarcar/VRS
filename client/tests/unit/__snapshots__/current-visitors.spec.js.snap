@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CurrentVisitors renders correctly 1`] = `
+<div>
+  <table class="visitor-table" style="display: none;">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Visitor</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th>Visitor</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </tfoot>
+    <tbody></tbody>
+  </table>
+  <p data-name="p-no-visitors">
+    There are no visitors at the office right now.
+  </p>
+</div>
+`;

@@ -12,8 +12,7 @@ import './assets/scss/index.scss'
 
 import GAuth from 'vue-google-oauth2'
 const gauthOption = {
-  clientId:
-    '1007298745712-cjugfj7206jajdmj811ods8rrosf5ff5.apps.googleusercontent.com',
+  clientId: process.env.VUE_APP_CLIENTID,
   scope: 'profile email',
 }
 Vue.use(GAuth, gauthOption)
@@ -29,3 +28,7 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app')
+
+if (window.Cypress) {
+  window.__store__ = store
+}

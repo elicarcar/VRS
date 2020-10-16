@@ -115,17 +115,7 @@ app.post('/auth', async (req, res) => {
   try {
     const { id_token } = data
 
-    const user = {
-      token: id_token,
-    }
-
-    jwt.sign({ user }, 'secretkey', { expiresIn: '10h' }, (err, token) => {
-      if (err) {
-        res.json({ err })
-      } else {
-        res.send(token)
-      }
-    })
+    res.send(id_token)
   } catch (error) {
     console.log(error)
     if (error) {

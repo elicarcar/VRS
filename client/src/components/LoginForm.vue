@@ -5,7 +5,11 @@
 
       <form>
         <div class="form-group d-flex justify-content-center">
-          <button class="btn btn-primary g-signin2" @click.prevent="submit">
+          <button
+            class="btn btn-primary"
+            id="g-signin2"
+            @click.prevent="submit"
+          >
             LOGIN
           </button>
         </div>
@@ -30,7 +34,7 @@ export default {
         })
         .catch((error) => {
           const alert = {
-            alert: error.message,
+            alert: error.error,
             alertType: 'danger',
           }
           this.alert(alert)

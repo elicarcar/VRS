@@ -6,6 +6,7 @@
           <th></th>
           <th>Visitor</th>
           <th>Email</th>
+          <th></th>
         </tr>
       </thead>
       <tfoot>
@@ -13,6 +14,7 @@
           <th></th>
           <th>Visitor</th>
           <th>Email</th>
+          <th></th>
         </tr>
       </tfoot>
       <tbody>
@@ -25,7 +27,7 @@
           <td>{{ visitor.first_name + visitor.last_name }}</td>
           <td>{{ visitor.email }}</td>
           <td>
-            <button class="btn" @click="changeStatus(visitor.id)">
+            <button class="btn status-btn" @click="changeStatus(visitor.id)">
               {{ visitor.is_logged ? 'End' : 'Start' }}
             </button>
           </td>
@@ -33,7 +35,7 @@
       </tbody>
     </table>
 
-    <p v-if="!visitors.length">
+    <p data-name="p-no-visitors" v-if="!visitors.length">
       There are no visitors at the office right now.
     </p>
   </div>

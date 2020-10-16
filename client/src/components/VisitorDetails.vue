@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="visitor.current_appointment">
+    <div
+      data-name="current-appointment"
+      v-if="visitor !== null && visitor.current_appointment !== null"
+    >
       <b-button v-b-toggle.collapse-1 variant="default" class="text-shadow-30"
         >Current Appointment</b-button
       >
@@ -11,13 +14,13 @@
             {{ visitor.current_appointment.person.name }} <br />
 
             <strong>Starting Time:</strong>
-            {{ visitor.current_appointment.start_time }}
+            {{ visitor.start_time | date }}
           </p>
         </b-card>
       </b-collapse>
     </div>
 
-    <div v-show="visits.length">
+    <div data-name="visits" v-show="visits && visits.length">
       <b-button v-b-toggle.collapse-1 variant="default" class="text-shadow-30"
         >Appointments</b-button
       >
@@ -47,8 +50,8 @@
                 <td>{{ visitor.first_name }}</td>
                 <td>{{ visitor.email }}</td>
                 <td>{{ visit.person.person.name }}</td>
-                <td>{{ visit.start_time }}</td>
-                <td>{{ visit.end_time }}</td>
+                <td>{{ visit.start_time | date }}</td>
+                <td>{{ visit.end_time | date }}</td>
               </tr>
             </tbody>
           </table>
@@ -60,6 +63,7 @@
 
 <script>
 import { utcToZonedTime, format } from 'date-fns-tz'
+
 export default {
   name: 'VisitorDetails',
 

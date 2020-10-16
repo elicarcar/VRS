@@ -44,8 +44,7 @@ describe('LoginButtons', () => {
       expect(wrapper.find("[data-name='logout-btn']").exists()).toBe(true)
     }
   }),
-    it('shows modal when clicked on logout and calles Logout function', async () => {
-      const spyLogout = jest.spyOn(LoginButtons.methods, 'Logout')
+    it('shows modal when clicked on logout ', async () => {
       const wrapper = shallowMount(LoginButtons, {
         store,
         localVue,
@@ -57,8 +56,5 @@ describe('LoginButtons', () => {
       })
 
       expect(wrapper.find('.modal-overlay').isVisible()).toBe(true)
-
-      await wrapper.find("[data-name='logout-fn-btn']").trigger('click')
-      expect(actions.logout).toHaveBeenCalled()
     })
 })
