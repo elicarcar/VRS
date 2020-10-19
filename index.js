@@ -3,7 +3,6 @@ const app = express()
 const cors = require('cors')
 const pool = require('./db/db')
 const auth = require('./middleware/auth')
-const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 
