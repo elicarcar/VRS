@@ -157,7 +157,6 @@ app.post('/visitor/visits/:v_id', auth, async (req, res) => {
     )
     res.json(currentVisitors.rows)
   } catch (error) {
-    console.log(error.stack)
     res.status(500).send('Server error')
   }
 })
@@ -169,7 +168,6 @@ app.get('/visits', auth, async (req, res) => {
     const visits = await pool.query('SELECT * FROM visits')
     res.json(visits.rows)
   } catch (error) {
-    console.log(error.stack)
     res.status(500).send('Server error')
   }
 })
