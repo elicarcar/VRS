@@ -1,1 +1,4 @@
-export const base_URL = "http://localhost:5000";
+export const base_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://thawing-beach-80585.herokuapp.com'
+    : 'http://localhost:5000'
