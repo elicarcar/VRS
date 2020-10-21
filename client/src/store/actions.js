@@ -83,15 +83,15 @@ export default {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Headers':
-            'Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+            'authorization, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
           'Access-Control-Allow-Credentials': 'true',
           'Access-Control-Allow-Methods': 'GET',
-          'Authentication-Key': '22dJ5EScDDYacu3qdnH96Hnhdbl8N33L',
-          'Authentication-Secret': '22dJ5EScDDYacu3qdnH96Hnhdbl8N33L',
+          'Authentication-Key': process.env.VUE_APP_SIMPLICATE_AUTH_KEY,
+          'Authentication-Secret': process.env.VUE_APP_SIMPLICATE_AUTH_SECRET,
         },
       })
       .then((res) => {
-        commit('GET_PEOPLE', res.data)
+        commit('GET_PEOPLE', res.data.data)
       })
       .catch((err) => {
         const alert = {

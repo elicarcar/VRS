@@ -58,7 +58,7 @@
             v-model="visitor.current_appointment.person"
             :options="people"
             value-field="id"
-            text-field="name"
+            text-field="full_name"
             required
           ></b-form-select>
         </b-form-group>

@@ -11,7 +11,7 @@
         <b-card>
           <p class="card-text" visible>
             <strong>Appointment with:</strong>
-            {{ visitor.current_appointment.person.name }} <br />
+            {{ visitor.current_appointment.person.full_name }} <br />
 
             <strong>Starting Time:</strong>
             {{ visitor.start_time | date }}
@@ -49,7 +49,7 @@
               <tr>
                 <td>{{ visitor.first_name }}</td>
                 <td>{{ visitor.email }}</td>
-                <td>{{ visit.person.person.name }}</td>
+                <td>{{ visit.person.person.full_name }}</td>
                 <td>{{ visit.start_time | date }}</td>
                 <td>{{ visit.end_time | date }}</td>
               </tr>
