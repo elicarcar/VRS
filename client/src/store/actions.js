@@ -52,10 +52,11 @@ export default {
 
       dispatch('alert', alert)
     } catch (err) {
+      console.log('error', err)
       commit('AUTH_ERROR')
       clearAuthToken()
       const errorAlert = {
-        alert: err.message,
+        alert: err,
         alertType: 'danger',
       }
       dispatch('alert', errorAlert)
@@ -78,7 +79,17 @@ export default {
 
   getPeople: async ({ commit, dispatch }) => {
     axios
-      .get('https://my-json-server.typicode.com/elicarcar/mockAPI/people')
+      .get('https://wirelab.simplicate.nl/api/v2/crm/person', {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers':
+            'Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+          'Access-Control-Allow-Credentials': 'true',
+          'Access-Control-Allow-Methods': 'GET',
+          'Authentication-Key': '22dJ5EScDDYacu3qdnH96Hnhdbl8N33L',
+          'Authentication-Secret': '22dJ5EScDDYacu3qdnH96Hnhdbl8N33L',
+        },
+      })
       .then((res) => {
         commit('GET_PEOPLE', res.data)
       })

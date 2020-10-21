@@ -25,20 +25,30 @@ export default {
 
   methods: {
     ...mapActions(['alert', 'login']),
-    submit() {
-      this.$gAuth
-        .signIn()
-        .then((user) => {
-          this.login(user)
+
+    async submit() {
+      try {
+        const googleUser = await this.$gAuth.signIn()
+        const profile = googleUser.getBasicProfile()
+        const isNotGmail = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@wirelab([\.])nl/g
+        if (isNotGmail.test(profile.Wt)) {
+          this.login(googleUser)
           this.isSignIn = this.$gAuth.isAuthorized
-        })
-        .catch((error) => {
+        } else {
           const alert = {
-            alert: error.error,
+            alert: '401 - Not a valid user.',
             alertType: 'danger',
           }
           this.alert(alert)
-        })
+        }
+      } catch (error) {
+        console.log(error)
+        const alert = {
+          alert: error.error,
+          alertType: 'danger',
+        }
+        this.alert(alert)
+      }
     },
   },
 }
