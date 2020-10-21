@@ -23,12 +23,17 @@ module.exports = async function (req, res, next) {
             res.status(401).json({ msg: 'Unauthorized user.' })
           } else {
             const payload = login.getPayload()
-            req.user = {
-              full_name: payload.name,
-              email: payload.email,
-              id: payload.sub,
+            const isWirelabAccount = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@wirelab([\.])nl/g
+            if (isWirelabAccount.test(payload.email)) {
+              req.user = {
+                full_name: payload.name,
+                email: payload.email,
+                id: payload.sub,
+              }
+              next()
+            } else {
+              res.status(401).send('Invalid email.')
             }
-            next()
           }
         }
       )
