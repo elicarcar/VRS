@@ -32,7 +32,7 @@ module.exports = async function (req, res, next) {
               }
               next()
             } else {
-              res.status(401).send('Invalid email.')
+              throw new Error('Invalid email.')
             }
           }
         }

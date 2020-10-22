@@ -3,12 +3,12 @@
     <div class="d-flex justify-content-center align-items-center">
       <h1>Visitors</h1>
     </div>
-    <AllVisitors :visitors="visitors" />
+    <AllVisitors :visitors="localVisitors" :allVisitors="visitors" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import AllVisitors from '../components/AllVisitors'
 
 export default {
@@ -20,6 +20,9 @@ export default {
 
   computed: {
     ...mapState(['visitors']),
+    localVisitors() {
+      return this.$store.getters.getVisitorsBasedOnLocation
+    },
   },
 
   methods: {

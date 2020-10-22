@@ -2,7 +2,7 @@
   <div>
     <table
       class="visitor-table"
-      v-show="!visitors.isLoading && visitors.data.length"
+      v-show="!allVisitors.isLoading && visitors.length"
     >
       <thead>
         <tr>
@@ -19,7 +19,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr v-for="visitor in visitors.data" :key="visitor.id">
+        <tr v-for="visitor in visitors" :key="visitor.id">
           <td class="status">
             <span
               :class="[visitor.is_logged ? 'logged-in' : 'logged-out']"
@@ -27,31 +27,33 @@
           </td>
           <td>
             <router-link :to="`/visitor/${visitor.id}`"
-              >{{ visitor.first_name + " " + visitor.last_name }}
+              >{{ visitor.first_name + ' ' + visitor.last_name }}
             </router-link>
           </td>
           <td>{{ visitor.email }}</td>
         </tr>
       </tbody>
     </table>
-    <p v-if="!visitors.data.length && !visitors.isLoading">
+    <p v-if="!visitors.length && !allVisitors.isLoading">
       No visitors yet.
     </p>
-    <div v-if="visitors.isLoading">
+    <div v-if="allVisitors.isLoading">
       <Spinner />
     </div>
   </div>
 </template>
 
 <script>
-import Spinner from "../components/Spinner";
+import Spinner from '../components/Spinner'
+
 export default {
-  name: "AllVisitors",
+  name: 'AllVisitors',
   components: {
-    Spinner
+    Spinner,
   },
   props: {
-    visitors: Object
-  }
-};
+    visitors: Array,
+    allVisitors: Object,
+  },
+}
 </script>

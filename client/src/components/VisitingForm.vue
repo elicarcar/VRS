@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapState, mapActions } from 'vuex'
 import { uuid } from 'vue-uuid'
 
@@ -142,6 +143,7 @@ export default {
       }
     },
   },
+
   mounted() {
     this.$store.dispatch('getPeople')
   },

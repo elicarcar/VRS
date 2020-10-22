@@ -47,20 +47,22 @@
 </style>
 
 <script>
-import Nav from "./components/Nav";
-import Alert from "./components/Alert";
-import { getAuthToken } from "./utils/auth.js";
+import Nav from './components/Nav'
+import Alert from './components/Alert'
+import { getAuthToken } from './utils/auth.js'
+
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     Nav,
-    Alert
+    Alert,
   },
   created() {
     if (localStorage.token) {
-      getAuthToken(localStorage.token);
+      getAuthToken(localStorage.token)
     }
-    this.$store.dispatch("loadUser");
-  }
-};
+    this.$store.dispatch('loadUser')
+    this.$store.dispatch('fetchIP')
+  },
+}
 </script>

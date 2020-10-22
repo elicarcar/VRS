@@ -4,20 +4,35 @@ const cors = require('cors')
 const pool = require('./db/db')
 const auth = require('./middleware/auth')
 const history = require('connect-history-api-fallback')
-
+const axios = require('axios')
 require('dotenv').config()
 
 app.use(cors())
 app.use(history())
 app.use(express.json())
 
+const getIP = async () => {
+  try {
+    const res = await axios.get('https://api64.ipify.org?format=json')
+    return res.data.ip
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 app.get('/', async (req, res) => {
-  res.end('Hello')
+  try {
+    const ip = await getIP()
+    res.send(ip)
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 // POST visitor
 app.post('/visitor', async (req, res) => {
   try {
+    //get body
     const {
       first_name,
       last_name,
@@ -25,10 +40,14 @@ app.post('/visitor', async (req, res) => {
       company_name,
       current_appointment,
     } = req.body
+
     const registeredVisitor = await pool.query(
       'SELECT EXISTS(SELECT * FROM visitors where email=$1)',
       [email]
     )
+
+    //get IP
+    const ip = await getIP()
 
     if (registeredVisitor.rows[0].exists) {
       pool.query(
@@ -44,7 +63,7 @@ app.post('/visitor', async (req, res) => {
     } else {
       const start = new Date()
       pool.query(
-        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment, start_time) VALUES($1, $2, $3, $4, $5, $6 ) RETURNING *',
+        'INSERT INTO visitors (first_name, last_name, email, company_name, current_appointment, start_time, ip_address) VALUES($1, $2, $3, $4, $5, $6, $7 ) RETURNING *',
         [
           first_name,
           last_name,
@@ -52,6 +71,7 @@ app.post('/visitor', async (req, res) => {
           company_name,
           current_appointment,
           start,
+          ip,
         ],
         (err, result) => {
           if (err) {
@@ -118,7 +138,6 @@ app.post('/auth', async (req, res) => {
 
     res.send(id_token)
   } catch (error) {
-    console.log(error)
     if (error) {
       res.status(401).send(error.message)
     }
@@ -180,5 +199,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.listen(process.env.PORT || 5000, () => {
-  console.log('server runs successfully')
+  console.log('working')
 })

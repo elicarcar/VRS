@@ -5,6 +5,15 @@ import { setAuthToken, clearAuthToken } from '../utils/auth.js'
 import router from '../router/index.js'
 
 export default {
+  fetchIP: async ({ commit }) => {
+    try {
+      const ip = await axios.get(`${base_URL}/`)
+      commit('SET_IP', ip)
+    } catch (error) {
+      throw error
+    }
+  },
+
   loadUser: async ({ commit }) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token)
@@ -43,7 +52,7 @@ export default {
 
       commit('AUTH_SUCCESS')
       setAuthToken(res.data)
-      dispatch('loadUser')
+      await dispatch('loadUser')
 
       const alert = {
         alert: 'You have successfully logged in',
@@ -52,7 +61,6 @@ export default {
 
       dispatch('alert', alert)
     } catch (err) {
-      console.log('error', err)
       commit('AUTH_ERROR')
       clearAuthToken()
       const errorAlert = {
@@ -129,7 +137,6 @@ export default {
       })
       .catch((error) => {
         commit('ERROR_VISITORS', error.message)
-        console.log(error)
       })
   },
 

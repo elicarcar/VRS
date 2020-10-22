@@ -10,7 +10,8 @@ CREATE TABLE visitors (
     current_appointment JSON DEFAULT NULL,
     start_time TIMESTAMP WITHOUT TIME ZONE DEFAULT (now() at time zone 'utc'),
     end_time TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
-    is_logged Boolean default true);
+    is_logged Boolean default true,
+    ip_address CIDR );
 
 CREATE TABLE visits (
 id BIGSERIAL NOT NULL PRIMARY KEY UNIQUE,
