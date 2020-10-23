@@ -1,6 +1,6 @@
 export default {
   SET_IP: (state, ip) => {
-    state.ip = ip.data
+    state.ip = ip
   },
 
   AUTH_SUCCESS: (state) => {

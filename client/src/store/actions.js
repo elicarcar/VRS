@@ -7,7 +7,11 @@ import router from '../router/index.js'
 export default {
   fetchIP: async ({ commit }) => {
     try {
-      const ip = await axios.get(`${base_URL}/`)
+      const data = await axios.get(`${base_URL}/`)
+      const {
+        data: { ip },
+      } = data
+
       commit('SET_IP', ip)
     } catch (error) {
       throw error
@@ -86,28 +90,19 @@ export default {
   },
 
   getPeople: async ({ commit, dispatch }) => {
-    axios
-      .get('https://wirelab.simplicate.nl/api/v2/crm/person', {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers':
-            'authorization, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Methods': 'GET',
-          'Authentication-Key': process.env.VUE_APP_SIMPLICATE_AUTH_KEY,
-          'Authentication-Secret': process.env.VUE_APP_SIMPLICATE_AUTH_SECRET,
-        },
-      })
-      .then((res) => {
-        commit('GET_PEOPLE', res.data.data)
-      })
-      .catch((err) => {
-        const alert = {
-          alert: err.message,
-          alertType: 'danger',
-        }
-        dispatch('alert', alert)
-      })
+    try {
+      const data = await axios.get(`${base_URL}/`)
+      const {
+        data: { people },
+      } = data
+      commit('GET_PEOPLE', people.data)
+    } catch (err) {
+      const alert = {
+        alert: err.message,
+        alertType: 'danger',
+      }
+      dispatch('alert', alert)
+    }
   },
 
   addVisitor: async ({ commit, dispatch }, visitor) => {
