@@ -20,10 +20,34 @@ const getIP = async () => {
   }
 }
 
+const getPeople = async () => {
+  try {
+    const res = await axios.get(
+      'https://wirelab.simplicate.nl/api/v2/crm/person',
+      {
+        headers: {
+          'Authentication-Key': process.env.SIMPLICATE_AUTH_KEY,
+          'Authentication-Secret': process.env.SIMPLICATE_AUTH_SECRET,
+        },
+      }
+    )
+    return res.data
+  } catch (error) {
+    console.log(err)
+  }
+}
+
 app.get('/', async (req, res) => {
   try {
     const ip = await getIP()
-    res.send(ip)
+    const people = await getPeople()
+
+    const data = {
+      ip,
+      people,
+    }
+
+    res.send(data)
   } catch (error) {
     console.log(error)
   }
